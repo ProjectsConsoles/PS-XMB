@@ -1,0 +1,20 @@
+PORTADAS CUADRADAS (opcional) - tema PS XMB
+
+Con las tarjetas PS4 o PS5, Steam solo tiene portadas verticales y se ven
+recortadas. Este script baja portadas cuadradas de SteamGridDB para tus juegos.
+
+1. Saca tu clave gratis: https://www.steamgriddb.com/profile/preferences/api
+   (inicia sesion con tu cuenta de Steam).
+2. En la Deck abre Konsole (modo escritorio) y corre, con tu clave:
+
+   python3 ~/homebrew/themes/PS\ XMB/portadas/portadas_cuadradas.py TU_CLAVE
+
+3. Activa el tema "PS XMB Portadas" en CSS Loader si no aparece activo.
+
+Listo. Desde ahi la Deck baja sola la portada de cada juego que instales o
+agregues (incluidos los no-Steam y los de Proton). Con "Steam Deck (verticales)"
+se ven las portadas normales. No cambia las imagenes de Steam.
+
+Si un juego sale con la portada de otro, agregalo en ajustes_portadas.json
+(nombre del juego -> id de SteamGridDB), borra su imagen en
+~/homebrew/themes/PS XMB Portadas/img y vuelve a correr el script sin la clave.

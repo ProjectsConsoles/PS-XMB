@@ -1,0 +1,96 @@
+/* Inicio con look de PS4: fila de juegos hasta arriba, la portada seleccionada
+   crece y las que siguen se recorren; barra de arriba solo con hora y bateria. */
+
+/* Fuera el arte borroso del juego, el resplandor y el titulo de la seccion */
+.gamepadhomerecentgames_RecentGamesBackgroundContainer,
+.basicgamecarousel_CarouselCapsuleBackgroundGlow,
+.gamepadhomerecentgames_RecentGamesHeader {
+  display: none !important;
+}
+
+/* Solo la fila de juegos */
+.gamepadhome_ScrollArea > :not(.gamepadhome_RecentSection) {
+  display: none !important;
+}
+
+.gamepadhome_RecentSection {
+  height: 100vh !important;
+  padding-top: 44px !important;
+  box-sizing: border-box;
+}
+
+/* Portadas chicas. Mas ancho y alto en la misma proporcion para que la fila
+   llene la pantalla y quepa la portada agrandada sin cortarse. */
+.basicgamecarousel_BasicGameCarousel {
+  width: 117.7% !important;
+  height: 480px !important;
+  transform: scale(0.85);
+  transform-origin: 0 0;
+}
+
+/* Steam pone cada portada con left fijo; la animacion va en transform */
+.ReactVirtualized__Grid__innerScrollContainer > div {
+  transition: transform 0.22s ease-out;
+  transform-origin: 0 0;
+}
+
+/* La seleccionada crece... */
+.ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin {
+  transform: scale(1.6);
+  z-index: 2;
+}
+
+/* ...y las que vienen despues se recorren lo que crecio (134px * 0.6) */
+.ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin ~ div {
+  transform: translateX(80px);
+}
+
+/* Portadas no seleccionadas un poco apagadas */
+.basicgamecarousel_BasicGameCarouselItem {
+  opacity: 0.7;
+  transition: opacity 0.22s ease-out;
+}
+
+.basicgamecarousel_BasicGameCarouselItem.gpfocuswithin {
+  opacity: 1;
+}
+
+/* Barra de arriba: solo bateria y hora */
+.header_OverrideHeaderBackground {
+  background: transparent !important;
+}
+
+.searchbar_SearchAndTitleContainer,
+.header_NotificationsIcon,
+.header_WirelessIcon {
+  visibility: hidden !important;
+}
+
+.header_Clock {
+  font-weight: 300 !important;
+  font-size: 18px !important;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
+/* Barra de botones de abajo transparente */
+.footer_BasicFooter {
+  background: transparent !important;
+  border-top: none !important;
+}
+
+/* Tarjeta "Ver mas en la biblioteca" al final de la fila, con el estilo del tema.
+   No se esconde: si se esconde, al llegar al final la seleccion cae en ella y no
+   se ve nada seleccionado. */
+.basicgamecarousel_TextBoxCarouselContents {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 12px;
+  font-size: 15px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+}

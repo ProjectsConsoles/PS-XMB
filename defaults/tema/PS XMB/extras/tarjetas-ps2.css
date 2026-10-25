@@ -1,0 +1,23 @@
+/* Forma de tarjetas PS2: cuadradas (va junto con tarjetas-ps4.css), con orilla azul
+   y la seleccionada girando lento en 3D, como los iconos de las partidas guardadas
+   en la memory card. */
+
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox {
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(120, 170, 255, 0.35);
+}
+
+/* el giro necesita perspectiva en el contenedor de la tarjeta */
+.basicgamecarousel_BasicGameCarousel .appportrait_Draggable {
+  perspective: 600px;
+}
+
+.ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin .appportrait_LibraryItemBox {
+  animation: ps2-giro 5s ease-in-out infinite alternate !important;
+  box-shadow: 0 0 0 2px rgba(150, 195, 255, 0.9), 0 0 22px 4px rgba(70, 130, 255, 0.55) !important;
+}
+
+@keyframes ps2-giro {
+  from { transform: rotateY(-28deg) rotateX(6deg); }
+  to { transform: rotateY(28deg) rotateX(-6deg); }
+}

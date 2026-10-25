@@ -1,0 +1,13 @@
+/* PS3 XMB - fondo degradado estilo PS3 y colores de Steam teñidos */
+
+:root {
+  --ps3-texto: #ffffff;
+
+  /* Steam usa estas variables en casi toda la interfaz de Modo Juego.
+     Las hacemos semitransparentes para que se vea el degradado detras. */
+  --gpSystemDarkestGrey: rgba(0, 0, 0, 0.45) !important;
+  --gpSystemDarkerGrey: rgba(0, 0, 0, 0.55) !important;
+  --gpSystemDarkGrey: rgba(0, 0, 0, 0.62) !important;
+  --gpColor-Blue: var(--ps3-claro) !important;
+  --gpColor-ChalkyBlue: var(--ps3-claro) !important;
+}

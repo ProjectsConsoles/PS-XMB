@@ -1,0 +1,21 @@
+/* Fondo degradado de la pantalla principal. Solo va en SP: los menus son ventanas
+   aparte y si lo llevan se ve el degradado detras del panel al abrir y cerrar. */
+
+/* Fondo XMB: claro arriba a la izquierda, oscuro hacia abajo */
+body {
+  background:
+    radial-gradient(ellipse 120% 80% at 15% 0%, var(--ps3-claro) 0%, transparent 65%),
+    linear-gradient(170deg, var(--ps3-claro) 0%, var(--ps3-oscuro) 60%, #000000 120%) !important;
+  background-attachment: fixed !important;
+  color: var(--ps3-texto);
+}
+
+/* El Inicio y otras paginas pintan su propio fondo opaco encima del body */
+.gamepadui_OpaqueBackground {
+  background: transparent !important;
+}
+
+/* La Biblioteca tambien pinta su propio fondo oscuro encima */
+.gamepadlibrary_GamepadLibrary {
+  background: transparent !important;
+}

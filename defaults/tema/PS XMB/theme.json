@@ -1,0 +1,347 @@
+{
+  "name": "PS XMB",
+  "author": "erickramoscruz",
+  "version": "v1.9",
+  "target": "System-Wide",
+  "manifest_version": 9,
+  "description": "Elige tu consola: PS2 (anillo de luces), PS3 (XMB en columna), PS4 (Flow o particulas), PS5 (simbolos) o Steam Deck; cada una trae su fondo animado, sus tarjetas y su color. Pagina de juego a pantalla completa (idea de Clean Gameview, MIT). Opcional: portadas de SteamGridDB (portadas/LEEME.txt), sonidos que cambian con la consola (sonidos/LEEME.txt) y controles arriba/abajo para la columna de PS3 (controles/LEEME.txt).",
+  "inject": {
+    "shared.css": [
+      "SP",
+      "QuickAccess",
+      "MainMenu"
+    ],
+    "fondo.css": [
+      "SP"
+    ],
+    "menus.css": [
+      "QuickAccess",
+      "MainMenu"
+    ],
+    "acentos.css": [
+      "SP",
+      "QuickAccess",
+      "MainMenu"
+    ],
+    "extras/inicio-ps4.css": [
+      "SP"
+    ]
+  },
+  "patches": {
+    "Consola": {
+      "default": "PS4 (Flow)",
+      "type": "dropdown",
+      "values": {
+        "PS2": {
+          "extras/tarjetas-ps4.css": [
+            "SP"
+          ],
+          "extras/tarjetas-ps2.css": [
+            "SP"
+          ],
+          "fondos/orbes-ps2.css": [
+            "SP"
+          ],
+          "colores/ps2.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "PS3": {
+          "extras/tarjetas-ps4.css": [
+            "SP"
+          ],
+          "extras/tarjetas-ps3.css": [
+            "SP"
+          ],
+          "fondos/ola-ps3.css": [
+            "SP"
+          ],
+          "colores/clasico.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ],
+          "extras/fondo-juego.css": [
+            "SP"
+          ]
+        },
+        "PS4 (Flow)": {
+          "extras/tarjetas-ps4.css": [
+            "SP"
+          ],
+          "fondos/ondas-ps4.css": [
+            "SP"
+          ],
+          "colores/ps4.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "PS4 (particulas)": {
+          "extras/tarjetas-ps4.css": [
+            "SP"
+          ],
+          "fondos/particulas-ps4.css": [
+            "SP"
+          ],
+          "colores/ps4.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "PS5": {
+          "extras/tarjetas-ps4.css": [
+            "SP"
+          ],
+          "extras/tarjetas-ps5.css": [
+            "SP"
+          ],
+          "fondos/simbolos-ps5.css": [
+            "SP"
+          ],
+          "colores/ps5.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ],
+          "extras/fondo-juego.css": [
+            "SP"
+          ]
+        },
+        "Steam Deck": {
+          "extras/tarjetas-deck.css": [
+            "SP"
+          ],
+          "colores/steamdeck.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        }
+      }
+    },
+    "Color de fondo": {
+      "default": "Automatico (de la consola)",
+      "type": "dropdown",
+      "values": {
+        "Automatico (de la consola)": {},
+        "PS4 (azul)": {
+          "colores/ps4.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "PS2 (azul noche)": {
+          "colores/ps2.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Clasico": {
+          "colores/clasico.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Enero (plata)": {
+          "colores/enero.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Febrero (dorado)": {
+          "colores/febrero.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Marzo (lima)": {
+          "colores/marzo.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Abril (rosa)": {
+          "colores/abril.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Mayo (verde)": {
+          "colores/mayo.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Junio (morado)": {
+          "colores/junio.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Julio (turquesa)": {
+          "colores/julio.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Agosto (azul)": {
+          "colores/agosto.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Septiembre (violeta)": {
+          "colores/septiembre.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Octubre (naranja)": {
+          "colores/octubre.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Noviembre (cafe)": {
+          "colores/noviembre.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Diciembre (rojo)": {
+          "colores/diciembre.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "PS5 (oscuro)": {
+          "colores/ps5.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "Steam Deck": {
+          "colores/steamdeck.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        }
+      }
+    },
+    "Color de las olas": {
+      "default": "Blanco",
+      "type": "dropdown",
+      "values": {
+        "Blanco": {
+          "olas/blanco.css": [
+            "SP"
+          ]
+        },
+        "Celeste": {
+          "olas/celeste.css": [
+            "SP"
+          ]
+        },
+        "Dorado": {
+          "olas/dorado.css": [
+            "SP"
+          ]
+        },
+        "Rosa": {
+          "olas/rosa.css": [
+            "SP"
+          ]
+        },
+        "Verde": {
+          "olas/verde.css": [
+            "SP"
+          ]
+        },
+        "Morado": {
+          "olas/morado.css": [
+            "SP"
+          ]
+        },
+        "Rojo": {
+          "olas/rojo.css": [
+            "SP"
+          ]
+        }
+      }
+    },
+    "Portadas con fondo borroso": {
+      "default": "No",
+      "type": "checkbox",
+      "values": {
+        "Si": {
+          "extras/portada-completa.css": [
+            "SP"
+          ]
+        },
+        "No": {}
+      }
+    },
+    "Juego a pantalla completa": {
+      "default": "Si",
+      "type": "checkbox",
+      "values": {
+        "Si": {
+          "extras/juego-completo.css": [
+            "SP"
+          ]
+        },
+        "No": {}
+      }
+    },
+    "Brillo al seleccionar": {
+      "default": "Si",
+      "type": "checkbox",
+      "values": {
+        "Si": {
+          "extras/brillo.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "No": {}
+      }
+    },
+    "Letra estilo PS3": {
+      "default": "No",
+      "type": "checkbox",
+      "values": {
+        "Si": {
+          "extras/fuente.css": [
+            "SP",
+            "QuickAccess",
+            "MainMenu"
+          ]
+        },
+        "No": {}
+      }
+    }
+  }
+}

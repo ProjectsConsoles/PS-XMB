@@ -1,0 +1,28 @@
+/* La ola del XMB de PS3: dos cintas de luz que se mueven despacio.
+   El dibujo va como mascara y el color sale de --ps3-ola, asi se puede cambiar.
+   Se anima con transform (no repinta), para no gastar bateria. */
+
+body::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  top: 38%;
+  width: 200%;
+  height: 34%;
+  pointer-events: none;
+  /* detras de toda la interfaz: la imagen de fondo de un juego la tapa */
+  z-index: -1;
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  background-color: var(--ps3-ola, #ffffff);
+  -webkit-mask-repeat: repeat-x;
+  -webkit-mask-size: 50% 100%;
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 240' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='white' stop-opacity='0'/><stop offset='0.5' stop-color='white' stop-opacity='0.55'/><stop offset='1' stop-color='white' stop-opacity='0'/></linearGradient></defs><path d='M0 120 C 213 40, 427 40, 640 120 S 1067 200, 1280 120 L 1280 150 C 1067 230, 853 230, 640 150 S 213 70, 0 150 Z' fill='url(%23g)'/><path d='M0 110 C 213 60, 427 30, 640 100 S 1067 190, 1280 110' stroke='white' stroke-opacity='0.7' stroke-width='1.5' fill='none'/><path d='M0 140 C 213 90, 427 70, 640 135 S 1067 210, 1280 140' stroke='white' stroke-opacity='0.45' stroke-width='1' fill='none'/></svg>");
+  animation: ps3-ola 40s linear infinite;
+  will-change: transform;
+}
+
+@keyframes ps3-ola {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

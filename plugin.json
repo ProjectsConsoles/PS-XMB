@@ -1,0 +1,11 @@
+{
+  "name": "PS XMB",
+  "author": "ProjectsConsoles",
+  "flags": [],
+  "api_version": 1,
+  "publish": {
+    "tags": ["style", "theme"],
+    "description": "Gives the Steam Deck home screen a PlayStation look: pick PS2, PS3 (vertical XMB column), PS4, PS5 or Steam Deck, each with its own animated background, cards, colors and sounds. Installs its theme through CSS Loader.",
+    "image": "https://raw.githubusercontent.com/ProjectsConsoles/PS-XMB/main/assets/ps5.png"
+  }
+}

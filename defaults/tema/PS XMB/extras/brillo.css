@@ -1,0 +1,11 @@
+/* Elemento seleccionado con el brillo blanco que pulsa, como en la PS3 */
+
+.gpfocus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 18px 4px rgba(255, 255, 255, 0.45) !important;
+  animation: ps3-brillo 1.6s ease-in-out infinite;
+}
+
+@keyframes ps3-brillo {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 18px 4px rgba(255, 255, 255, 0.45); }
+  50% { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6), 0 0 8px 1px rgba(255, 255, 255, 0.2); }
+}

@@ -1,0 +1,74 @@
+/* Fondo del juego seleccionado: a pantalla completa, aparece y despues de un rato
+   se desvanece (PS5: 10 s, PS3: 1 min; cada consola pone --psx-fondo-anim). Steam alterna dos imagenes: la del juego actual y la del anterior,
+   marcada OffScreen. La de salida se esconde, y la animacion va solo en la actual,
+   asi vuelve a empezar cada vez que una imagen pasa a ser la del juego actual. */
+/* La seccion de la fila queda por encima del fondo animado (body::before/after),
+   asi la imagen del juego tapa las olas mientras se ve y al desvanecerse vuelven
+   a aparecer; la fila va encima de la imagen. */
+.gamepadhome_RecentSection {
+  position: relative;
+  z-index: 2;
+}
+
+.gamepadhomerecentgames_RecentGamesInnerContainer {
+  position: relative;
+  z-index: 2;
+}
+
+.gamepadhomerecentgames_RecentGamesBackgroundContainer {
+  display: block !important;
+  position: fixed !important;
+  inset: 0 !important;
+  height: auto !important;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Steam desvanece el fondo hacia los bordes con una mascara radial; sin ella la
+   imagen queda opaca y tapa las olas por completo */
+.gamepadhomerecentgames_RecentGamesBackgroundContainer,
+.gamepadhomerecentgames_RecentGamesBackgroundImages {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+
+.gamepadhomerecentgames_RecentGamesBackgroundImages,
+.gamepadhomerecentgames_RecentGamesBackground {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.gamepadhomerecentgames_RecentGamesBackgroundImage {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  /* un poco oscura para que se lean la fila y el nombre */
+  filter: brightness(0.6);
+  opacity: 0;
+}
+
+.gamepadhomerecentgames_RecentGamesBackgroundImage:not(.gamepadhomerecentgames_OffScreen) {
+  animation: var(--psx-fondo-anim, psx-fondo-10s 11s) ease forwards !important;
+}
+
+.gamepadhomerecentgames_RecentGamesBackgroundImage.gamepadhomerecentgames_OffScreen {
+  display: none !important;
+}
+
+/* 11 s: aparece en medio segundo, se queda 10 s y se va en 1 s */
+@keyframes psx-fondo-10s {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* 61 s: aparece en medio segundo, se queda 1 min y se va en 1 s */
+@keyframes psx-fondo-60s {
+  0% { opacity: 0; }
+  0.8% { opacity: 1; }
+  98.4% { opacity: 1; }
+  100% { opacity: 0; }
+}

@@ -1,0 +1,16 @@
+PS XMB EN WINDOWS (ROG Ally, PC) - opcional
+
+El tema se ve en el Big Picture de Steam con CSS Loader Desktop:
+1. Instala CSS Loader Desktop: https://github.com/DeckThemes/CSSLoader-Desktop/releases
+2. Copia la carpeta "PS XMB" a %USERPROFILE%\homebrew\themes\ y activala en CSS Loader.
+
+Para portadas, controles de la columna de PS3, sonidos por consola y color automatico
+(en Windows no hay Decky ni Audio Loader; esto hace su trabajo):
+3. Baja Python "embeddable" de python.org (zip), descomprimelo donde quieras.
+4. Corre una vez (con tu clave de SteamGridDB al final si quieres portadas):
+
+   <carpeta de python>\python.exe "%USERPROFILE%\homebrew\themes\PS XMB\windows\psxmb_windows.py" --instalar TU_CLAVE
+
+Queda corriendo y arranca solo al iniciar sesion. Los paquetes de sonidos se bajan
+solos de la tienda de DeckThemes. Steam no tiene musica de menu en Windows, asi que
+la musica de PS2/PS3 no aplica aqui.

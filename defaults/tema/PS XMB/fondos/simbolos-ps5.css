@@ -1,0 +1,45 @@
+/* Fondo estilo PS5: simbolos de PlayStation en contorno y particulas de luz que
+   suben despacio, como la pantalla de arranque de la consola. Dos capas a distinta
+   velocidad. Generado por simbolos_ps5.py; el color sale de --ps3-ola. */
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 300%;
+  pointer-events: none;
+  /* detras de toda la interfaz: la imagen de fondo de un juego la tapa */
+  z-index: -1;
+  mix-blend-mode: screen;
+  background-color: color-mix(in srgb, var(--ps3-ola, #ffffff) 70%, var(--ps3-claro));
+  -webkit-mask-repeat: repeat;
+  will-change: transform;
+}
+
+/* capa lejana: simbolos chicos y puntos, lenta */
+body::before {
+  -webkit-mask-size: 700px 500px;
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 500' fill='none' stroke='white' stroke-width='1.5' stroke-linejoin='round' stroke-linecap='round'><path d='M426 338 L440 361 L413 361 Z' transform='rotate(12 426 352)' stroke-opacity='0.49'/><circle cx='612' cy='52' r='11' transform='rotate(7 612 52)' stroke-opacity='0.49'/><path d='M588 77 L609 98 M609 77 L588 98' transform='rotate(2 599 88)' stroke-opacity='0.31'/><rect x='387' y='37' width='17' height='17' transform='rotate(21 396 46)' stroke-opacity='0.32'/><path d='M515 93 L528 116 L501 116 Z' transform='rotate(6 515 107)' stroke-opacity='0.28'/><circle cx='119' cy='41' r='14' transform='rotate(-14 119 41)' stroke-opacity='0.3'/><path d='M640 397 L658 416 M658 397 L640 416' transform='rotate(2 649 406)' stroke-opacity='0.49'/><rect x='446' y='111' width='29' height='29' transform='rotate(23 460 126)' stroke-opacity='0.42'/><path d='M594 155 L604 172 L584 172 Z' transform='rotate(-18 594 165)' stroke-opacity='0.29'/><circle cx='80' cy='167' r='12' transform='rotate(9 80 167)' stroke-opacity='0.25'/><path d='M236 157 L263 184 M263 157 L236 184' transform='rotate(-9 249 170)' stroke-opacity='0.37'/><rect x='331' y='329' width='15' height='15' transform='rotate(-24 338 336)' stroke-opacity='0.49'/><circle cx='525' cy='422' r='1.0' fill='white' stroke='none' fill-opacity='0.69'/><circle cx='256' cy='289' r='1.0' fill='white' stroke='none' fill-opacity='0.32'/><circle cx='127' cy='478' r='1.3' fill='white' stroke='none' fill-opacity='0.68'/><circle cx='651' cy='471' r='1.5' fill='white' stroke='none' fill-opacity='0.48'/><circle cx='367' cy='388' r='1.2' fill='white' stroke='none' fill-opacity='0.67'/><circle cx='558' cy='430' r='1.1' fill='white' stroke='none' fill-opacity='0.77'/><circle cx='64' cy='170' r='1.9' fill='white' stroke='none' fill-opacity='0.76'/><circle cx='238' cy='462' r='1.8' fill='white' stroke='none' fill-opacity='0.46'/><circle cx='222' cy='89' r='1.1' fill='white' stroke='none' fill-opacity='0.37'/><circle cx='482' cy='498' r='1.2' fill='white' stroke='none' fill-opacity='0.32'/><circle cx='691' cy='267' r='1.6' fill='white' stroke='none' fill-opacity='0.42'/><circle cx='416' cy='413' r='1.7' fill='white' stroke='none' fill-opacity='0.51'/><circle cx='39' cy='458' r='1.0' fill='white' stroke='none' fill-opacity='0.55'/><circle cx='587' cy='65' r='2.1' fill='white' stroke='none' fill-opacity='0.77'/><circle cx='441' cy='394' r='1.2' fill='white' stroke='none' fill-opacity='0.52'/><circle cx='104' cy='422' r='1.4' fill='white' stroke='none' fill-opacity='0.53'/><circle cx='700' cy='426' r='2.5' fill='white' stroke='none' fill-opacity='0.53'/><circle cx='342' cy='365' r='1.7' fill='white' stroke='none' fill-opacity='0.45'/><circle cx='283' cy='73' r='1.6' fill='white' stroke='none' fill-opacity='0.79'/><circle cx='672' cy='313' r='1.7' fill='white' stroke='none' fill-opacity='0.47'/><circle cx='62' cy='136' r='2.2' fill='white' stroke='none' fill-opacity='0.73'/><circle cx='253' cy='393' r='2.2' fill='white' stroke='none' fill-opacity='0.65'/><circle cx='465' cy='380' r='1.5' fill='white' stroke='none' fill-opacity='0.65'/><circle cx='197' cy='243' r='2.2' fill='white' stroke='none' fill-opacity='0.65'/><circle cx='206' cy='473' r='2.0' fill='white' stroke='none' fill-opacity='0.59'/><circle cx='8' cy='273' r='1.4' fill='white' stroke='none' fill-opacity='0.64'/><circle cx='324' cy='408' r='2.0' fill='white' stroke='none' fill-opacity='0.70'/><circle cx='244' cy='322' r='2.1' fill='white' stroke='none' fill-opacity='0.71'/><circle cx='245' cy='421' r='2.3' fill='white' stroke='none' fill-opacity='0.64'/><circle cx='683' cy='478' r='1.8' fill='white' stroke='none' fill-opacity='0.56'/></svg>");
+  animation: ps5-lejos 70s linear infinite;
+}
+
+/* capa cercana: simbolos grandes y tenues, un poco mas rapida */
+body::after {
+  -webkit-mask-size: 1100px 800px;
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1100 800' fill='none' stroke='white' stroke-width='2.5' stroke-linejoin='round' stroke-linecap='round'><path d='M512 280 L540 328 L484 328 Z' transform='rotate(-25 512 309)' stroke-opacity='0.23'/><circle cx='553' cy='687' r='27' transform='rotate(6 553 687)' stroke-opacity='0.19'/><path d='M43 274 L121 352 M121 274 L43 352' transform='rotate(11 82 313)' stroke-opacity='0.18'/><rect x='173' y='184' width='54' height='54' transform='rotate(21 200 211)' stroke-opacity='0.19'/><path d='M642 563 L675 620 L610 620 Z' transform='rotate(-20 642 597)' stroke-opacity='0.22'/><circle cx='337' cy='525' r='40' transform='rotate(-21 337 525)' stroke-opacity='0.17'/><circle cx='293' cy='168' r='1.4' fill='white' stroke='none' fill-opacity='0.70'/><circle cx='219' cy='709' r='2.3' fill='white' stroke='none' fill-opacity='0.33'/><circle cx='417' cy='393' r='1.0' fill='white' stroke='none' fill-opacity='0.51'/><circle cx='997' cy='90' r='1.9' fill='white' stroke='none' fill-opacity='0.36'/><circle cx='637' cy='716' r='1.3' fill='white' stroke='none' fill-opacity='0.30'/><circle cx='92' cy='432' r='1.0' fill='white' stroke='none' fill-opacity='0.34'/><circle cx='546' cy='737' r='1.6' fill='white' stroke='none' fill-opacity='0.50'/><circle cx='703' cy='75' r='1.9' fill='white' stroke='none' fill-opacity='0.39'/></svg>");
+  animation: ps5-cerca 45s linear infinite;
+}
+
+/* cada capa sube exactamente un mosaico para que el ciclo no brinque */
+@keyframes ps5-lejos {
+  from { transform: translateY(0); }
+  to { transform: translateY(-500px); }
+}
+
+@keyframes ps5-cerca {
+  from { transform: translateY(0); }
+  to { transform: translateY(-800px); }
+}

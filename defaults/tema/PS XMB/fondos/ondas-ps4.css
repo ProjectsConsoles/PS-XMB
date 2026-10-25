@@ -1,0 +1,45 @@
+/* Fondo estilo PS4 ("Flow"): arcos grandes y suaves que suben de abajo a la
+   izquierda hacia la derecha, apenas mas claros que el fondo, con una linea
+   brillante en el borde. Dos capas que se mecen en sentido contrario. El color sale de --ps3-ola. */
+
+/* La PS4 usa un azul casi parejo, sin oscurecer tanto hacia abajo */
+html body {
+  background: linear-gradient(170deg, var(--ps3-claro) 0%, var(--ps3-oscuro) 75%, color-mix(in srgb, var(--ps3-oscuro) 75%, #000000) 110%) !important;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: -15%;
+  pointer-events: none;
+  /* detras de toda la interfaz: la imagen de fondo de un juego la tapa */
+  z-index: -1;
+  mix-blend-mode: screen;
+  /* mezclado con el color del fondo para que las bandas sean del mismo tono, mas claro */
+  background-color: color-mix(in srgb, var(--ps3-ola, #ffffff) 45%, var(--ps3-claro));
+  -webkit-mask-size: 100% 100%;
+  will-change: transform;
+}
+
+/* capa de atras: bandas anchas y tenues */
+body::before {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 720' preserveAspectRatio='none'><path d='M0 720 Q 700 640 1280 230 L 1280 330 Q 760 700 260 720 Z' fill='white' fill-opacity='0.16'/><path d='M760 720 Q 1100 650 1280 560 L 1280 720 Z' fill='white' fill-opacity='0.12'/><path d='M0 720 Q 700 640 1280 230' fill='none' stroke='white' stroke-opacity='0.3' stroke-width='1.5'/></svg>");
+  animation: ps4-flow-atras 22s ease-in-out infinite alternate;
+}
+
+/* capa de enfrente: la banda clara y la linea brillante */
+body::after {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 720' preserveAspectRatio='none'><path d='M180 720 Q 860 600 1280 290 L 1280 430 Q 900 690 560 720 Z' fill='white' fill-opacity='0.24'/><path d='M430 720 Q 990 620 1280 430 L 1280 540 Q 1060 690 820 720 Z' fill='white' fill-opacity='0.18'/><path d='M180 720 Q 860 600 1280 290' fill='none' stroke='white' stroke-opacity='0.7' stroke-width='2'/></svg>");
+  animation: ps4-flow-frente 15s ease-in-out infinite alternate;
+}
+
+@keyframes ps4-flow-atras {
+  from { transform: translate(4%, -2%) rotate(1deg) scale(1); }
+  to { transform: translate(-6%, 4%) rotate(-2deg) scale(1.08); }
+}
+
+@keyframes ps4-flow-frente {
+  from { transform: translate(-5%, 3%) rotate(-1deg) scale(1.05); }
+  to { transform: translate(7%, -4%) rotate(2.5deg) scale(1); }
+}

@@ -1,0 +1,11 @@
+CONTROLES DE LA COLUMNA VERTICAL (modo PS3) - tema PS XMB
+
+En la consola PS3 los juegos se ven en columna, como el XMB. Steam la sigue
+manejando con izquierda/derecha; este script hace que se maneje con arriba/abajo
+(solo en PS3, en las demas consolas no cambia nada).
+
+En la Deck abre Konsole (modo escritorio) y corre una vez:
+
+   python3 ~/homebrew/themes/PS\ XMB/controles/xmb_vertical.py --instalar-auto
+
+Listo. Queda funcionando siempre, aunque reinicies la Deck.

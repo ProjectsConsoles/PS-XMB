@@ -1,0 +1,11 @@
+/* Forma de tarjetas Steam Deck: portadas verticales como las trae Steam. La primera
+   (ultimo jugado) sigue horizontal y ancha, asi que crece menos para no tapar la fila. */
+
+.ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin:has(.basicgamecarousel_Featured) {
+  transform: scale(1.1);
+}
+
+/* lo que crecio la primera: 430px * 0.1 */
+.ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin:has(.basicgamecarousel_Featured) ~ div {
+  transform: translateX(44px);
+}

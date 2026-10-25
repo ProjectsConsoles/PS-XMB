@@ -1,0 +1,7 @@
+{
+  "_ayuda": "Correcciones para portadas_cuadradas.py: nombre del juego -> id de SteamGridDB (o null para no ponerle portada). Despues de cambiar algo, borra su imagen en la carpeta PS XMB Portadas/img y vuelve a correr el script.",
+  "PS Remote Play": 5247907,
+  "Five Nights at Freddy's: World": 10070,
+  "KOF 2002 MUGEN": 37100,
+  "KOF 2003": 34349
+}

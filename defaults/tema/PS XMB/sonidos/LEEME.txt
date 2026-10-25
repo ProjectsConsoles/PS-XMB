@@ -1,0 +1,24 @@
+SONIDOS SEGUN LA CONSOLA (opcional) - tema PS XMB
+
+Cambia solos los sonidos y la musica de Audio Loader segun la consola que elijas
+en PS XMB:
+  - PS2 -> sonidos y ambiente de PS2
+  - PS3 -> sonidos del XMB y musica del menu de PS3
+  - PS4 -> sonidos de PS4
+  - PS5 -> sonidos de PS5
+  - Steam Deck -> sonidos normales de Steam
+  Donde no hay musica de esa consola, vuelve la musica que tenias.
+  Ademas, al cambiar de consola el color de fondo regresa al de esa consola
+  (Automatico); si eliges otro color se respeta hasta el siguiente cambio.
+
+1. Instala el plugin Audio Loader desde la tienda de Decky.
+2. En la tienda de Audio Loader baja estos paquetes:
+     PS2 System Sounds / PS2 Ambience / XMB / PS3 Menu Music /
+     PS4 / PS5_Sounds
+   (si usas otros, pon sus nombres en sonidos.json)
+3. En la Deck abre Konsole (modo escritorio) y corre una vez:
+
+   python3 ~/homebrew/themes/PS\ XMB/sonidos/sonidos_por_modo.py --instalar-auto
+
+Listo. Desde ahi cambia solo cada vez que cambias la consola en CSS Loader, sin
+reiniciar nada. Un paquete que no tengas instalado simplemente se ignora.

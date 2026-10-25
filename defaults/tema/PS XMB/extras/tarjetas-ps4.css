@@ -1,0 +1,61 @@
+/* Forma de tarjetas PS4: todas cuadradas, incluida la primera (ultimo jugado). */
+
+/* marca de fila cuadrada: con ella se aplican las portadas de SteamGridDB del tema
+   "PS XMB Portadas" (las genera portadas/portadas_cuadradas.py) */
+.basicgamecarousel_BasicGameCarousel {
+  --psx-cuadradas: si;
+}
+
+/* La primera tarjeta (ultimo jugado) Steam la pone horizontal en un espacio de
+   442px; las demas van cada 146px. Se hace cuadrada como las otras y toda la fila
+   se corre 296px a la izquierda (442 - 146) para no dejar hueco; la primera se
+   regresa esos 296px para quedar en su lugar. */
+.ReactVirtualized__Grid__innerScrollContainer {
+  transform: translateX(-296px);
+}
+
+.ReactVirtualized__Grid__innerScrollContainer > div:has(.basicgamecarousel_Featured) {
+  width: 146px !important;
+  transform: translateX(296px);
+}
+
+.ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin:has(.basicgamecarousel_Featured) {
+  transform: translateX(296px) scale(1.6);
+}
+
+.basicgamecarousel_BasicGameCarousel .basicgamecarousel_Featured,
+.basicgamecarousel_BasicGameCarousel .basicgamecarousel_Featured .appportrait_LibraryItemBox {
+  width: 134px !important;
+}
+
+/* Tarjetas cuadradas como en la PS4: la caja de la portada mide lo mismo de
+   alto que de ancho (134px) y la imagen se recorta al centro */
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox {
+  height: 134px !important;
+  overflow: hidden;
+}
+
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox .libraryassetimage_Container {
+  height: 100% !important;
+  padding-top: 0 !important;
+}
+
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox .libraryassetimage_Image {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+/* el contenedor de la portada trae alto fijo de 201px; a 134px el nombre del
+   juego queda pegado debajo de la tarjeta (Steam anima el nombre con transform,
+   por eso no se puede mover con translate) */
+.basicgamecarousel_BasicGameCarouselItemMediaContainer > div:first-child {
+  height: 134px !important;
+}
+
+/* la tarjeta "Ver mas en la biblioteca" tambien cuadrada */
+.basicgamecarousel_BasicGameCarousel .basicgamecarousel_TextBoxCarouselContents {
+  height: 134px !important;
+}

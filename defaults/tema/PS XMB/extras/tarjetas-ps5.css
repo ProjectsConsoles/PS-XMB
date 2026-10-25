@@ -1,0 +1,48 @@
+/* Forma de tarjetas PS5: cuadradas, mas chicas y con esquinas redondeadas. Al
+   seleccionar un juego se muestra su imagen de fondo 10 segundos y luego se
+   desvanece para que se vea el fondo animado del tema. Va junto con
+   tarjetas-ps4.css (cuadradas) y solo cambia tamano, esquinas y fondo. */
+
+/* fila mas chica que la de PS4 (0.85) */
+.basicgamecarousel_BasicGameCarousel {
+  width: 161.3% !important;
+  transform: scale(0.62);
+}
+
+/* la seleccionada crece un poco menos que en PS4... */
+.ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin {
+  transform: scale(1.45);
+}
+
+.ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin:has(.basicgamecarousel_Featured) {
+  transform: translateX(296px) scale(1.45);
+}
+
+/* ...asi que las siguientes se recorren menos (134px * 0.45) */
+.ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin ~ div {
+  transform: translateX(62px);
+}
+
+/* esquinas redondeadas */
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox {
+  border-radius: 14px;
+}
+
+.basicgamecarousel_BasicGameCarousel .gpfocus,
+.basicgamecarousel_BasicGameCarousel .basicgamecarousel_TextBoxCarouselContents,
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox::before,
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox::after,
+.basicgamecarousel_BasicGameCarousel .basicgamecarousel_CarouselCapsuleBackgroundGlow {
+  border-radius: 14px;
+}
+
+/* Steam marca la seleccionada con un contorno (outline) cuadrado semitransparente
+   que no sigue las esquinas; se quita y queda el brillo del tema, que si es redondo */
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox {
+  outline: none !important;
+}
+
+/* fondo del juego seleccionado (extras/fondo-juego.css): 10 segundos */
+:root {
+  --psx-fondo-anim: psx-fondo-10s 11s;
+}

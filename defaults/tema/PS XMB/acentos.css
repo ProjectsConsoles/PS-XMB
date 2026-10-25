@@ -1,0 +1,63 @@
+/* Steam escribe su azul (#1a9fff) a mano en muchos controles, sin variable.
+   Aqui se repintan los que se ven en el uso normal con el color del tema. */
+
+:root {
+  --psx-acento: color-mix(in srgb, var(--ps3-claro) 80%, #ffffff);
+}
+
+/* interruptores encendidos */
+.gamepaddialog_ToggleRail::before {
+  background: var(--psx-acento) !important;
+}
+
+/* barras deslizables (FPS, brillo, volumen...) */
+.gamepadslider_SliderTrack {
+  --left-track-color: var(--psx-acento) !important;
+}
+
+.gamepadslider_SliderNotchTick.gamepadslider_TickActive {
+  background-color: var(--psx-acento) !important;
+}
+
+.gamepadslider_CompoundSliderSubSliderLabelInternal {
+  color: var(--ps3-oscuro) !important;
+}
+
+/* barras de progreso (descargas, actualizaciones) */
+.progressbar_ProgressBar .progressbar_Percent {
+  background: var(--psx-acento) !important;
+}
+
+.progressbar_ProgressBarFieldStatus .progressbar_TextContainer .progressbar_OperationText {
+  color: var(--psx-acento) !important;
+}
+
+/* iconos activos (bateria, wifi, etc.) */
+._mWXfodCx_ActivatableFill._mWXfodCx_Active {
+  fill: var(--psx-acento) !important;
+}
+
+._mWXfodCx_ActivatableStroke._mWXfodCx_Active {
+  stroke: var(--psx-acento) !important;
+}
+
+/* botones principales con foco */
+button.gamepaddialog_Button.DialogButton.gpfocus.Primary,
+button.gamepaddialog_Button.DialogButton:enabled.gpfocus.Primary {
+  background: var(--psx-acento) !important;
+}
+
+/* lista y titulo de las pantallas de Configuracion */
+.gamepadpagedsettings_PagedSettingsDialog_Title,
+.pagedsettings_PagedSettingsDialog_Title {
+  color: var(--psx-acento) !important;
+}
+
+.gamepadpagedsettings_PagedSettingsDialog_PageListItem.gamepadpagedsettings_Active {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--psx-acento) 25%, transparent) 0%, transparent 100%) !important;
+}
+
+.gamepadpagedsettings_PagedSettingsDialog_PageListItem:focus {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--psx-acento) 40%, transparent) 0%, transparent 100%) !important;
+  border-left-color: var(--psx-acento) !important;
+}

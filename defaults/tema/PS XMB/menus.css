@@ -1,0 +1,34 @@
+/* Menu de Steam y menu de acceso rapido: panel oscuro del color del tema
+   y la opcion seleccionada iluminada en blanco, como en la PS4 */
+
+.mainmenu_Menu,
+.quickaccessmenu_QuickAccessMenu {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--ps3-claro) 55%, #000000) 0%,
+    color-mix(in srgb, var(--ps3-oscuro) 85%, #000000) 55%,
+    #000000 130%) !important;
+}
+
+.mainmenu_Menu .gpfocus {
+  background: rgba(255, 255, 255, 0.16) !important;
+}
+
+/* Barra de titulo del menu de acceso rapido: el contenido pasa por debajo al
+   bajar, asi que lleva fondo solido, del mismo tono que la parte de arriba del panel */
+.quickaccessmenu_Title {
+  background: color-mix(in srgb, var(--ps3-claro) 55%, #000000) !important;
+  box-shadow: 0 0 7px 12px color-mix(in srgb, var(--ps3-claro) 55%, #000000) !important;
+}
+
+/* Pestaña seleccionada de la columna izquierda (traia gris fijo de Steam) */
+.quickaccessmenu_Tab.quickaccessmenu_Selected {
+  background: color-mix(in srgb, var(--ps3-claro) 40%, #000000) !important;
+}
+
+/* Rayita que marca en que pantalla estas dentro del menu de Steam (traia azul fijo).
+   CSS Loader traduce mainmenu_ActiveDot al nombre nuevo de la clase, pero esta ventana
+   todavia usa el viejo; el selector de atributo con solo parte del nombre no lo traduce. */
+.mainmenu_ActiveDot,
+[class*="1uLVHdiiCg78BRnhq"] {
+  background: var(--psx-acento) !important;
+}

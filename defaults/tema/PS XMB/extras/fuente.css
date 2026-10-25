@@ -1,0 +1,8 @@
+/* Letra parecida a la Rodin de la PS3 (la original es de Sony y no es libre).
+   Se descarga de Google Fonts; sin internet se queda la letra normal de Steam. */
+
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500;700&display=swap");
+
+* {
+  font-family: "M PLUS 1p", "Motiva Sans", sans-serif !important;
+}

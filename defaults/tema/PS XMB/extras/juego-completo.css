@@ -1,0 +1,31 @@
+/* Pagina del juego a pantalla completa: la imagen ocupa toda la pantalla y la
+   barra de Jugar queda abajo; Actividad, Tus cosas, etc. solo aparecen al bajar.
+   Idea tomada de Clean Gameview (SuchMeme, licencia MIT). */
+
+:root {
+  --psx-barra-jugar: 80px;
+  --psx-barra-botones: 40px;
+}
+
+/* lo de arriba de la barra de Jugar llena la pantalla */
+.BasicUI .sharedappdetailsheader_TopCapsule {
+  height: calc(100vh - var(--psx-barra-jugar) - var(--psx-barra-botones));
+}
+
+/* la imagen de fondo llega hasta abajo, detras de la barra de Jugar */
+.sharedappdetailsheader_HeaderBackgroundImage {
+  height: calc(100vh - var(--psx-barra-botones));
+}
+
+/* logo del juego fijo justo arriba de la barra de Jugar */
+.sharedappdetailsheader_BoxSizer {
+  --psx-logo: 120px;
+  top: calc(100vh - var(--psx-logo) * 1.3 - var(--psx-barra-jugar) - var(--psx-barra-botones)) !important;
+  max-height: var(--psx-logo);
+}
+
+/* barra de Jugar semitransparente para que se vea la imagen detras */
+.basicappdetailssectionstyler_PlaySection,
+.sharedappdetailsheader_TitleSection {
+  background: rgba(0, 0, 0, 0.35) !important;
+}

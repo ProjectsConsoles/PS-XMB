@@ -1,0 +1,89 @@
+/* Forma de tarjetas PS3: columna vertical como el XMB, con iconos horizontales
+   (320x176, ~1.8:1) sin marco; el seleccionado crece con halo blanco y su nombre va
+   a la derecha. La fila de Steam se gira 90 grados y cada icono se endereza; como
+   Steam la sigue manejando con izquierda/derecha, xmb_vertical.py convierte
+   arriba/abajo en izquierda/derecha cuando ve la marca --psx-vertical. Va junto con
+   tarjetas-ps4.css (que acomoda la primera tarjeta) y cambia el alto a 74px. */
+
+/* marcas: no usar las portadas cuadradas, si las horizontales de SteamGridDB */
+.basicgamecarousel_BasicGameCarousel {
+  --psx-cuadradas: no;
+  --psx-ancho: si;
+  --psx-vertical: si;
+  /* la fila girada: baja desde arriba, en la tercera parte izquierda de la pantalla.
+     A 0.55 el final de la columna queda arriba de la barra de botones (Steam la mide
+     igual en cualquier modo); los iconos se agrandan aparte, dentro de cada tarjeta */
+  transform: translate(1000px, -45px) rotate(90deg) scale(0.55) !important;
+  /* mas alto (que ya girado es mas ancho): Steam recorta lo que se sale de la fila,
+     y asi caben el icono agrandado y el nombre completo a su derecha */
+  height: 1545px !important;
+  /* el ancho (ya girado, el alto en pantalla) termina justo arriba de la barra de botones */
+  width: 1027px !important;
+  transform-origin: 0 0 !important;
+}
+
+/* cada icono se endereza girandolo de vuelta sobre su propio centro, se agranda
+   1.45x y se baja 1255px dentro de la fila girada para que el nombre (que queda a su
+   derecha) quepa en el area visible de la fila */
+.basicgamecarousel_BasicGameCarousel .basicgamecarousel_BasicGameCarouselItem {
+  transform: translateY(1255px) rotate(-90deg) scale(1.45);
+  transform-origin: 67px 37px;
+}
+
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox,
+.basicgamecarousel_BasicGameCarouselItemMediaContainer > div:first-child,
+.basicgamecarousel_BasicGameCarousel .basicgamecarousel_TextBoxCarouselContents {
+  height: 74px !important;
+}
+
+/* sin marco: solo la imagen, con esquinas apenas redondeadas */
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox {
+  border-radius: 3px;
+  background: transparent !important;
+}
+
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox .libraryassetimage_Container {
+  background: transparent !important;
+}
+
+/* halo blanco suave del XMB en vez del borde */
+.basicgamecarousel_BasicGameCarousel .gpfocus {
+  outline: none !important;
+  box-shadow: 0 0 14px 4px rgba(255, 255, 255, 0.55), 0 0 2px 1px rgba(255, 255, 255, 0.9) !important;
+}
+
+/* el nombre del seleccionado a la derecha del icono, a media altura */
+.basicgamecarousel_CarouselGameLabelWrapper {
+  position: absolute !important;
+  left: 162px !important;
+  top: 12px !important;
+  width: 560px !important;
+}
+
+/* la tarjeta seleccionada esta agrandada 1.6x y el icono 1.45x; la letra se reduce
+   para que se vea del tamano normal */
+.basicgamecarousel_CarouselGameLabel {
+  font-size: 0.5em;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* el seleccionado crece desde el centro del icono (no desde la esquina), asi no se
+   sale de la columna... */
+.ReactVirtualized__Grid__innerScrollContainer > div {
+  transform-origin: 67px 1292px;
+}
+
+/* ...y los de arriba y los de abajo se apartan la mitad de lo que crecio el icono
+   (74px * 1.45 * 0.6 / 2) */
+.ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin ~ div {
+  transform: translateX(32px);
+}
+
+.ReactVirtualized__Grid__innerScrollContainer > div:has(~ .gpfocuswithin) {
+  transform: translateX(-32px);
+}
+
+/* fondo del juego seleccionado (extras/fondo-juego.css): 1 minuto */
+:root {
+  --psx-fondo-anim: psx-fondo-60s 61s;
+}
