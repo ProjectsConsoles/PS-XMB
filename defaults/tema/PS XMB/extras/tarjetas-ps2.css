@@ -1,23 +1,37 @@
-/* Forma de tarjetas PS2: cuadradas (va junto con tarjetas-ps4.css), con orilla azul
-   y la seleccionada girando lento en 3D, como los iconos de las partidas guardadas
-   en la memory card. */
-
-.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox {
-  border-radius: 4px;
-  box-shadow: 0 0 0 1px rgba(120, 170, 255, 0.35);
-}
+/* Forma de tarjetas PS2: cuadradas (va junto con tarjetas-ps4.css) y en 3D como los
+   iconos de las partidas guardadas en la memory card: todas giradas en perspectiva
+   con su reflejo en el piso, y la seleccionada flota y gira de un lado a otro. */
 
 /* el giro necesita perspectiva en el contenedor de la tarjeta */
 .basicgamecarousel_BasicGameCarousel .appportrait_Draggable {
   perspective: 600px;
 }
 
+/* todas: giradas como objetos 3D, con orilla azul tenue y su reflejo abajo */
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox {
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(120, 170, 255, 0.35);
+  transform: rotateY(-22deg) rotateX(8deg) !important;
+  -webkit-box-reflect: below 6px linear-gradient(transparent 62%, rgba(255, 255, 255, 0.28));
+}
+
+/* la seleccionada flota (sube y baja)... */
+.ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin .appportrait_Draggable {
+  animation: ps2-flotar 3s ease-in-out infinite alternate;
+}
+
+/* ...y gira de un lado a otro, con brillo azul */
 .ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin .appportrait_LibraryItemBox {
   animation: ps2-giro 5s ease-in-out infinite alternate !important;
   box-shadow: 0 0 0 2px rgba(150, 195, 255, 0.9), 0 0 22px 4px rgba(70, 130, 255, 0.55) !important;
 }
 
 @keyframes ps2-giro {
-  from { transform: rotateY(-28deg) rotateX(6deg); }
-  to { transform: rotateY(28deg) rotateX(-6deg); }
+  from { transform: rotateY(-35deg) rotateX(6deg); }
+  to { transform: rotateY(35deg) rotateX(-6deg); }
+}
+
+@keyframes ps2-flotar {
+  from { transform: translateY(0); }
+  to { transform: translateY(-8px); }
 }
