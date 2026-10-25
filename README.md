@@ -15,6 +15,25 @@ through CSS Loader.*
 | **PS4** | **PS5** |
 | ![PS4](assets/ps4.png) | ![PS5](assets/ps5.png) |
 
+## Instalar
+
+PS XMB no está en la tienda de Decky; se instala desde el enlace del release:
+
+1. En la Steam Deck abre el menú **···** → **Decky** → ⚙️ **Ajustes** y activa
+   **Modo desarrollador**.
+2. En **Desarrollador**, elige **Instalar plugin desde URL** y pega:
+
+   ```
+   https://github.com/ProjectsConsoles/PS-XMB/releases/latest/download/PS-XMB.zip
+   ```
+
+3. Confirma. Abre el panel de **PS XMB** en el menú de Decky y elige tu consola.
+
+*Install: Decky → Settings → enable Developer mode → Developer → Install plugin from URL,
+and paste the link above.*
+
+Para actualizar, repite los mismos pasos con el mismo enlace.
+
 ## Consolas
 
 | Consola | Fondo animado | Tarjetas | Sonidos / música |
