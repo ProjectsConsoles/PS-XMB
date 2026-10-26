@@ -9,3 +9,11 @@
   0%, 100% { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 18px 4px rgba(255, 255, 255, 0.45); }
   50% { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6), 0 0 8px 1px rgba(255, 255, 255, 0.2); }
 }
+
+/* Pantalla de carga del juego: Steam le da el foco al panel entero (casi toda la
+   pantalla) y al recuadro de abajo, y el brillo dibujaba un marco gigante */
+.mainpanelapprunning_MainPanelAppRunning.gpfocus,
+.applaunchingdetails_BottomSection.gpfocus {
+  box-shadow: none !important;
+  animation: none !important;
+}

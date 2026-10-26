@@ -1,7 +1,7 @@
 {
   "name": "PS XMB",
   "author": "erickramoscruz",
-  "version": "v1.10",
+  "version": "v1.19",
   "target": "System-Wide",
   "manifest_version": 9,
   "description": "Elige tu consola: PS2 (anillo de luces), PS3 (XMB en columna), PS4 (Flow o particulas), PS5 (simbolos) o Steam Deck; cada una trae su fondo animado, sus tarjetas y su color. Pagina de juego a pantalla completa (idea de Clean Gameview, MIT). Opcional: portadas de SteamGridDB (portadas/LEEME.txt), sonidos que cambian con la consola (sonidos/LEEME.txt) y controles arriba/abajo para la columna de PS3 (controles/LEEME.txt).",

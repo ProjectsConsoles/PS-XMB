@@ -18,6 +18,7 @@ una vez y luego trabaja solo cada vez que cambias una opcion en CSS Loader:
 import base64
 import json
 import os
+import shutil
 import socket
 import sys
 import urllib.request
@@ -35,12 +36,62 @@ def instalado(paquete):
     return paquete in ("Default", "None") or os.path.isdir(os.path.join(SONIDOS, paquete))
 
 
+# sonidos que algunos paquetes no traen -> con que sonido del mismo paquete se rellenan
+# (si falta uno, Audio Loader deja sonar el de Steam encima del del paquete; p. ej. en
+# la cuadricula de la Biblioteca se oian los dos)
+RELLENOS = {
+    "deck_ui_tile_scroll.wav": ["deck_ui_navigation.wav"],
+    "bumper_end.wav": ["deck_ui_bumper_end_02.wav", "deck_ui_navigation.wav"],
+    "deck_ui_bumper_end_02.wav": ["bumper_end.wav", "deck_ui_navigation.wav"],
+    "confirmation_positive.wav": ["deck_ui_default_activation.wav", "deck_ui_into_game_detail.wav"],
+    "deck_ui_default_activation.wav": ["confirmation_positive.wav", "deck_ui_into_game_detail.wav"],
+    "confirmation_negative.wav": ["deck_ui_out_of_game_detail.wav", "deck_ui_hide_modal.wav"],
+}
+
+
+def completar_paquete(nombre):
+    """Copia del paquete con los sonidos que le faltan rellenados (ver RELLENOS), en
+    "<nombre> (PS XMB)". Si no hace falta rellenar nada, se usa el original."""
+    origen = os.path.join(SONIDOS, nombre)
+    manifiesto = os.path.join(origen, "pack.json")
+    if nombre in ("Default", "None") or not os.path.exists(manifiesto):
+        return nombre
+    with open(manifiesto) as f:
+        datos = json.load(f)
+    ignorar = set(datos.get("ignore", []))
+    tiene = lambda a: a not in ignorar and os.path.exists(os.path.join(origen, a))
+    rellenar = {}
+    for archivo, opciones in RELLENOS.items():
+        if not tiene(archivo):
+            fuente = next((o for o in opciones if tiene(o)), None)
+            if fuente:
+                rellenar[archivo] = fuente
+    if not rellenar:
+        return nombre
+    completo = nombre + " (PS XMB)"
+    destino = os.path.join(SONIDOS, completo)
+    hecho = os.path.join(destino, "pack.json")
+    # se rehace solo si el paquete original cambio despues de la copia
+    if not os.path.exists(hecho) or os.path.getmtime(hecho) < os.path.getmtime(manifiesto):
+        shutil.rmtree(destino, ignore_errors=True)
+        shutil.copytree(origen, destino)
+        for archivo, fuente in rellenar.items():
+            shutil.copy2(os.path.join(origen, fuente), os.path.join(destino, archivo))
+        datos.update({"name": completo, "ignore": sorted(ignorar - set(rellenar))})
+        datos.pop("id", None)  # para que la tienda no lo confunda con el original
+        with open(hecho, "w") as f:
+            json.dump(datos, f, indent=2)
+    return completo
+
+
 def elegir(cfg_tema, mapa, audio, estado):
     """Devuelve (paquete, musica) que tocan segun la consola elegida en el tema."""
     clave = cfg_tema.get("Consola", "").split(" ")[0].lower().replace("steam", "steam_deck")
     paquete = mapa.get("sonidos_" + clave) or mapa["sonidos_steam_deck"]
     if not instalado(paquete):
         paquete = audio.get("selected_pack", "Default")
+    else:
+        paquete = completar_paquete(paquete)
 
     nuestras = {v for k, v in mapa.items() if k.startswith("musica_") and v}
     actual = audio.get("selected_music", "None")

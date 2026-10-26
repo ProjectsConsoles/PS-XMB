@@ -5,7 +5,9 @@ En PS3 la fila de juegos se ve como columna (se gira con CSS), pero Steam la sig
 manejando con izquierda/derecha. Este script mete en la interfaz de Steam un pequeno
 traductor de botones: mientras la fila tenga la marca --psx-vertical (solo en PS3),
 arriba/abajo se convierten en izquierda/derecha, e izquierda/derecha no hacen nada
-(sacarian la seleccion de la columna). En las demas consolas no hace nada.
+(sacarian la seleccion de la columna). Con la marca --psx-grid (tabla de PS2),
+arriba/abajo saltan un renglon y la fila no se deja desplazar. En las demas
+consolas no hace nada.
 
 Steam borra el traductor cada vez que se reinicia su interfaz, asi que el servicio
 revisa cada pocos segundos y lo vuelve a poner si hace falta. Se instala una vez:
@@ -22,27 +24,56 @@ from sonidos_por_modo import evaluar_en_steam  # noqa: E402
 # botones de Steam: 9 arriba, 10 abajo, 11 izquierda, 12 derecha
 TRADUCTOR = r"""
 (() => {
-  const VERSION = 2;
+  const VERSION = 4;
   if (window.__psxXmb === VERSION) return "ya estaba";
-  // si hay una version anterior puesta, se quita su escucha antes de poner la nueva
+  // si hay una version anterior puesta, se quitan sus escuchas antes de poner la nueva
   if (window.__psxXmbEscucha) window.removeEventListener("vgp_onbuttondown", window.__psxXmbEscucha, true);
+  if (window.__psxXmbScroll) window.removeEventListener("scroll", window.__psxXmbScroll, true);
   window.__psxXmb = VERSION;
-  // arriba/abajo recorren la columna; izquierda/derecha (null) se ignoran
-  const CAMBIO = {9: 11, 10: 12, 11: null, 12: null};
+  const marca = (fila, nombre) => getComputedStyle(fila).getPropertyValue(nombre).trim();
+  const mandar = (destino, d, boton) => destino.dispatchEvent(new CustomEvent("vgp_onbuttondown", {
+    detail: {...d, button: boton, __psx: true}, bubbles: true, cancelable: true}));
+  // columna de PS3: arriba/abajo recorren la columna; izquierda/derecha (null) se ignoran
+  const VERTICAL = {9: 11, 10: 12, 11: null, 12: null};
   window.__psxXmbEscucha = (e) => {
     const d = e.detail;
-    if (!d || d.__psx || !(d.button in CAMBIO)) return;
+    if (!d || d.__psx || ![9, 10, 11, 12].includes(d.button)) return;
     const fila = e.target.closest && e.target.closest(".ReactVirtualized__Grid");
-    if (!fila || getComputedStyle(fila).getPropertyValue("--psx-vertical").trim() !== "si") return;
-    // se detiene el boton original y se manda el traducido a la misma tarjeta
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    if (CAMBIO[d.button] === null) return;
-    e.target.dispatchEvent(new CustomEvent("vgp_onbuttondown", {
-      detail: {...d, button: CAMBIO[d.button], __psx: true}, bubbles: true, cancelable: true}));
+    if (!fila) return;
+    const columnas = parseInt(marca(fila, "--psx-grid"), 10);
+    if (marca(fila, "--psx-vertical") === "si") {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      if (VERTICAL[d.button] !== null) mandar(e.target, d, VERTICAL[d.button]);
+    } else if (columnas > 0 && (d.button === 9 || d.button === 10)) {
+      // tabla de PS2: arriba/abajo = la tarjeta de un renglon antes/despues. Se pone el
+      // foco directo en ella: si se mandan varios izquierda/derecha seguidos, Steam
+      // ignora los que llegan muy rapido
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      const tarjetas = [...fila.querySelectorAll(".ReactVirtualized__Grid__innerScrollContainer > div")]
+        .sort((a, b) => parseFloat(a.style.left) - parseFloat(b.style.left));
+      const actual = tarjetas.findIndex((t) => t.classList.contains("gpfocuswithin"));
+      if (actual < 0) return;
+      let destino = actual + (d.button === 9 ? -columnas : columnas);
+      // abajo en el ultimo renglon incompleto va a la ultima tarjeta; arriba en el primero no hace nada
+      if (destino >= tarjetas.length) destino = tarjetas.length - 1;
+      if (destino < 0 || destino === actual) return;
+      const enfocables = tarjetas[destino].querySelectorAll(".Focusable");
+      if (enfocables.length) enfocables[enfocables.length - 1].focus();
+    }
+  };
+  // en la tabla Steam querria recorrer la fila hacia los lados: se mantiene quieta
+  window.__psxXmbScroll = (e) => {
+    const fila = e.target;
+    if (fila && fila.classList && fila.classList.contains("ReactVirtualized__Grid")
+        && parseInt(marca(fila, "--psx-grid"), 10) > 0 && fila.scrollLeft !== 0) {
+      fila.scrollLeft = 0;
+    }
   };
   // en window (fase de captura) para decidir antes que cualquier otra escucha
   window.addEventListener("vgp_onbuttondown", window.__psxXmbEscucha, true);
+  window.addEventListener("scroll", window.__psxXmbScroll, true);
   return "puesto";
 })()
 """

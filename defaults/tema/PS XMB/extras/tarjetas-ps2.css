@@ -1,18 +1,35 @@
 /* Forma de tarjetas PS2: cuadradas (va junto con tarjetas-ps4.css) y en 3D como los
-   iconos de las partidas guardadas en la memory card: todas giradas en perspectiva
-   con su reflejo en el piso, y la seleccionada flota y gira de un lado a otro. */
+   iconos de las partidas guardadas en la memory card: todas giran de un
+   lado a otro con su reflejo en el piso y aire entre ellas, y la seleccionada flota
+   y brilla. */
 
 /* el giro necesita perspectiva en el contenedor de la tarjeta */
 .basicgamecarousel_BasicGameCarousel .appportrait_Draggable {
   perspective: 600px;
 }
 
-/* todas: giradas como objetos 3D, con orilla azul tenue y su reflejo abajo */
+/* todas: orilla azul tenue y su reflejo abajo */
 .basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox {
   border-radius: 4px;
   box-shadow: 0 0 0 1px rgba(120, 170, 255, 0.35);
-  transform: rotateY(-22deg) rotateX(8deg) !important;
   -webkit-box-reflect: below 6px linear-gradient(transparent 62%, rgba(255, 255, 255, 0.28));
+}
+
+/* todas giran de un lado a otro, cada una desfasada para que no se muevan igual */
+.basicgamecarousel_BasicGameCarousel .appportrait_LibraryItemBox {
+  animation: ps2-giro 5s ease-in-out infinite alternate !important;
+}
+
+.ReactVirtualized__Grid__innerScrollContainer > div:nth-child(3n+1) .appportrait_LibraryItemBox {
+  animation-delay: -1.7s !important;
+}
+
+.ReactVirtualized__Grid__innerScrollContainer > div:nth-child(3n+2) .appportrait_LibraryItemBox {
+  animation-delay: -3.4s !important;
+}
+
+.ReactVirtualized__Grid__innerScrollContainer > div:nth-child(2n) .appportrait_LibraryItemBox {
+  animation-duration: 6.5s !important;
 }
 
 /* la seleccionada flota (sube y baja)... */
@@ -20,15 +37,16 @@
   animation: ps2-flotar 3s ease-in-out infinite alternate;
 }
 
-/* ...y gira de un lado a otro, con brillo azul */
+/* ...y brilla en azul */
 .ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin .appportrait_LibraryItemBox {
-  animation: ps2-giro 5s ease-in-out infinite alternate !important;
   box-shadow: 0 0 0 2px rgba(150, 195, 255, 0.9), 0 0 22px 4px rgba(70, 130, 255, 0.55) !important;
 }
 
+/* scale(0.85): cada tarjeta un poco mas chica dentro de su hueco, para dejar aire
+   entre ellas sin moverlas de lugar (Steam desplaza la fila contando su hueco) */
 @keyframes ps2-giro {
-  from { transform: rotateY(-35deg) rotateX(6deg); }
-  to { transform: rotateY(35deg) rotateX(-6deg); }
+  from { transform: rotateY(-35deg) rotateX(6deg) scale(0.85); }
+  to { transform: rotateY(35deg) rotateX(-6deg) scale(0.85); }
 }
 
 @keyframes ps2-flotar {

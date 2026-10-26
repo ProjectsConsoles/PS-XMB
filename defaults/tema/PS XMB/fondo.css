@@ -19,3 +19,14 @@ body {
 .gamepadlibrary_GamepadLibrary {
   background: transparent !important;
 }
+
+/* Con un juego abierto (menu de 3 puntos o avisos encima del juego) Steam pone su
+   fondo transparente para que se vea el juego detras: ahi no va el fondo del tema */
+body:has(.gamepadui_TransparentBackground) {
+  background: transparent !important;
+}
+
+body:has(.gamepadui_TransparentBackground)::before,
+body:has(.gamepadui_TransparentBackground)::after {
+  display: none !important;
+}

@@ -32,3 +32,32 @@
 [class*="1uLVHdiiCg78BRnhq"] {
   background: var(--psx-acento) !important;
 }
+
+/* Menu de Steam con un juego abierto: la columna del juego traia los colores de
+   cada juego y el panel de la derecha el azul fijo de Steam */
+.mainmenuapprunning_ScrollMask_322FV,
+.mainmenuapprunning_AppColumn_3FAI9 {
+  background: color-mix(in srgb, var(--ps3-oscuro) 70%, #000000) !important;
+}
+
+.mainmenuapprunning_NavigationColumn_27FEg {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--ps3-claro) 70%, #000000) 0%,
+    color-mix(in srgb, var(--ps3-oscuro) 90%, #000000) 60%,
+    #000000 140%) !important;
+}
+
+.mainmenuapprunning_NavigationColumn_27FEg::before {
+  background: radial-gradient(circle at 50% 50%,
+    rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 43%, transparent 66%) !important;
+}
+
+/* Barras de arriba (hora y bateria) y de abajo (botones) del menu de acceso rapido:
+   traian el azul y el negro fijos de Steam */
+.header_Header.header_InQuickAccess {
+  background: color-mix(in srgb, var(--ps3-claro) 55%, #000000) !important;
+}
+
+.footer_QuickAccessFooter {
+  background: color-mix(in srgb, var(--ps3-oscuro) 45%, #000000) !important;
+}

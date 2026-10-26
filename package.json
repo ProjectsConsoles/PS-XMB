@@ -1,6 +1,6 @@
 {
   "name": "ps-xmb",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "PlayStation-style home screen for the Steam Deck (Decky plugin)",
   "type": "module",
   "scripts": {
