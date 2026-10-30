@@ -28,7 +28,7 @@ for sub in ("sonidos", "controles", "portadas"):
 import decky  # noqa: E402
 
 AJUSTES = os.path.join(HOME, ".config", "psxmb_plugin.json")
-DEFECTO = {"sonidos": True, "controles": True, "portadas": True}
+DEFECTO = {"sonidos": True, "controles": True, "portadas": True, "separacion": 80}
 SERVICIOS = ["psxmb-sonidos.path", "psxmb-sonidos.service", "psxmb-portadas.path",
              "psxmb-portadas.timer", "psxmb-portadas.service", "psxmb-controles.service"]
 
@@ -71,6 +71,12 @@ def guardar():
 
 async def correr(funcion):
     return await asyncio.get_event_loop().run_in_executor(None, funcion)
+
+
+def baraja():
+    """controles/baraja.py: acomoda la Biblioteca en baraja (solo si esa opcion esta activa)"""
+    import baraja as modulo
+    return modulo
 
 
 def quitar_controles():
@@ -203,6 +209,13 @@ class Plugin:
         aviso(f"{clave}: {'si' if valor else 'no'}")
         return ESTADO["ajustes"]
 
+    async def set_separacion(self, valor):
+        """distancia entre cajas de la Biblioteca en baraja; se aplica al momento"""
+        ESTADO["ajustes"]["separacion"] = max(40, min(140, int(valor)))
+        guardar()
+        await correr(lambda: baraja().poner(ESTADO["ajustes"]["separacion"]))
+        return ESTADO["ajustes"]["separacion"]
+
     async def guardar_clave(self, clave):
         clave = (clave or "").strip()
         if len(clave) < 20:
@@ -236,6 +249,7 @@ class Plugin:
                 if os.path.isdir(TEMA):
                     if ESTADO["ajustes"]["controles"]:
                         await correr(lambda: modulos()[2].poner())
+                    await correr(lambda: baraja().poner(ESTADO["ajustes"]["separacion"]))
                     if os.path.getmtime(config) != ultima_cfg:
                         # CSS Loader guarda varias veces seguidas: se espera a que termine
                         await asyncio.sleep(1)
@@ -257,5 +271,6 @@ class Plugin:
     async def _unload(self):
         try:
             await correr(quitar_controles)
+            await correr(lambda: baraja().quitar())
         except Exception:
             pass

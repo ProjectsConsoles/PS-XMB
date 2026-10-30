@@ -1,0 +1,103 @@
+/* Biblioteca en baraja, estilo Aurora (Xbox 360): la seleccionada al centro, grande y de
+   frente; las demas a los lados, mas chicas, encimadas y giradas hacia el centro.
+   La cuadricula de Steam es grid > fila(display: contents) > envoltura(contents) > tarjeta.
+   controles/baraja.py le pone a cada tarjeta su distancia a la seleccionada:
+   --i (posicion), --d (limitada a +-7), --s (signo), --ad (distancia real) y --c (1 si es la
+   seleccionada), y a la cuadricula --centro (la mitad de su ancho). La distancia entre
+   cajas (--psx-paso) se ajusta desde el plugin.
+   --psx-baraja avisa al script que la opcion esta activa. La navegacion de Steam sigue
+   por indice: izquierda/derecha pasan de juego en juego. */
+
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] {
+  --psx-baraja: si;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0 !important;
+  height: 470px !important;
+  /* las cajas movidas con transform no deben ensanchar la pestana: si la ensanchan, Steam
+     la desplaza de lado y la fila queda cargada a la izquierda. El margen deja ver las
+     cajas de las orillas */
+  overflow-x: clip !important;
+  overflow-y: visible !important;
+  overflow-clip-margin: 60px;
+  padding: 150px 0 0 0 !important;
+}
+
+/* En la pagina las tarjetas quedan en fila, 10px una de otra, para que Steam sepa cual
+   esta a la izquierda y a la derecha. Lo que se ve lo acomoda el transform. */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div {
+  flex: 0 0 134px;
+  width: 134px !important;
+  height: 201px !important;
+  margin: 0 -124px 0 0 !important;
+  position: relative !important;
+  z-index: calc(100 - var(--ad, 0));
+  transform:
+    translateX(calc(var(--centro, 500px) - 67px - var(--i, 0) * 10px
+      + var(--s, 0) * (70px + clamp(1, var(--ad, 0), 7) * var(--psx-paso, 80px))))
+    perspective(800px)
+    rotateY(calc(var(--s, 0) * -45deg))
+    scale(calc(1.25 + 0.75 * var(--c, 0)));
+  transform-origin: center center;
+  opacity: calc(1 - (var(--ad, 0) - 6) * 0.5);
+}
+
+/* Las de los lados mas oscuras. Va como capa encima (no con filter): filter aplana el 3D
+   y el lomo de la caja 3D dejaria de verse */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div > div:first-child > div:nth-child(2)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, calc(0.32 * (1 - var(--c, 1))));
+  transition: background 0.35s ease;
+}
+
+/* Hasta que el script les da su lugar, las tarjetas no se ven (si no, al cambiar de
+   pestana aparecen un instante amontonadas). La animacion solo corre ya acomodadas. */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div:not([style*="--d"]) {
+  opacity: 0 !important;
+}
+
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-listo] > div > div > div {
+  transition: transform 0.35s cubic-bezier(.2, .8, .2, 1), opacity 0.3s ease;
+}
+
+/* Al presionar A: las demas se apartan y se desvanecen... */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-abriendo] > div > div > div:not([data-psx-elegida]) {
+  opacity: 0 !important;
+  transform:
+    translateX(calc(var(--centro, 500px) - 67px - var(--i, 0) * 10px
+      + var(--s, 0) * (340px + clamp(1, var(--ad, 0), 7) * var(--psx-paso, 80px))))
+    perspective(800px)
+    rotateY(calc(var(--s, 0) * -60deg))
+    scale(1.1) !important;
+}
+
+/* ...y la elegida se esconde: en su lugar vuela una copia en 3D que arma
+   controles/baraja.py (gira sin parar hacia la izquierda y se encoge hasta desaparecer
+   mientras se abre la pagina del juego) */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div[data-psx-elegida] {
+  opacity: 0 !important;
+  transition: none !important;
+}
+
+/* Pagina del juego: la portada y la zona de Jugar entran desde la izquierda, hacia donde
+   se fue la caja, en vez de aparecer de golpe */
+.BasicUI .sharedappdetailsheader_TopCapsule,
+.basicappdetailssectionstyler_PlaySection {
+  animation: psx-entra 0.45s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.basicappdetailssectionstyler_PlaySection {
+  animation-delay: 0.08s;
+}
+
+@keyframes psx-entra {
+  from { transform: translateX(-80px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}

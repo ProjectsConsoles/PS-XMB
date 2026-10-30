@@ -1,0 +1,90 @@
+/* Portadas como caja 3D: cada juego de la Biblioteca se ve como un estuche de DVD de Steam
+   (franja de Steam arriba, como las cajas de Xbox 360, brillo de plastico y lomo en 3D).
+   Tarjeta = grid > fila(contents) > envoltura(contents) > tarjeta; dentro: la caja de
+   Steam (primer hijo) con el contenedor de la imagen (que saca su alto de padding-top) y
+   una capa vacia (segundo hijo) donde va la franja. El lomo y el canto solo se ven
+   cuando la caja esta girada (Biblioteca en baraja). */
+
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div {
+  transform-style: preserve-3d;
+}
+/* franja de Steam arriba: la portada se recorre hacia abajo */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div > div:first-child > div:first-child,
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div > div:nth-child(3) {
+  top: 7% !important;
+  bottom: 0 !important;
+  height: auto !important;
+  padding-top: 0 !important;
+  overflow: hidden !important;
+}
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div > div:first-child > div:first-child img,
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div > div:nth-child(3) img {
+  object-fit: cover !important;
+  height: 100% !important;
+}
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div > div:first-child {
+  border-radius: 4px;
+  outline: 2px solid #0b0e13;
+  background: #0b0e13;
+}
+/* franja con el nombre y brillo de plastico encima de toda la caja */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div > div:first-child > div:nth-child(2)::before {
+  content: "STEAM";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  /* franja de 7%: el texto centrado en ella y el logo a su izquierda */
+  padding-left: 13px;
+  font: 800 10px/14px "Motiva Sans", Arial, sans-serif;
+  letter-spacing: 2px;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0 0 6px rgba(102, 192, 244, 0.8);
+  border-radius: 4px;
+  background:
+    url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2211.5%22%20fill%3D%22%23fff%22/%3E%3Cpath%20d%3D%22M7.6%2015.6%2015.6%208.9%22%20stroke%3D%22%23171a21%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2215.6%22%20cy%3D%228.9%22%20r%3D%224.1%22%20fill%3D%22%23171a21%22/%3E%3Ccircle%20cx%3D%2215.6%22%20cy%3D%228.9%22%20r%3D%222.4%22%20fill%3D%22%23fff%22/%3E%3Ccircle%20cx%3D%227.6%22%20cy%3D%2215.6%22%20r%3D%222.9%22%20fill%3D%22%23171a21%22/%3E%3Ccircle%20cx%3D%227.6%22%20cy%3D%2215.6%22%20r%3D%221.5%22%20fill%3D%22%23fff%22/%3E%3C/svg%3E") calc(50% - 29px) 2px / 10px 10px no-repeat,
+    linear-gradient(115deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.04) 28%, transparent 45%,
+      transparent 70%, rgba(255, 255, 255, 0.08) 85%, transparent 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, calc(0.35 * max(var(--s, 0), 0))) 0%, transparent 60%),
+    linear-gradient(270deg, rgba(0, 0, 0, calc(0.35 * max(calc(var(--s, 0) * -1), 0))) 0%, transparent 60%),
+    linear-gradient(180deg, #2a475e 0%, #171a21 7%, transparent 7%),
+    linear-gradient(180deg, transparent 6.6%, #66c0f4 6.6%, #66c0f4 7.3%, transparent 7.3%);
+}
+/* lomo de la caja (izquierda) */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div::after {
+  content: "STEAM";
+  position: absolute;
+  left: 0; top: 0;
+  width: 36px; height: 100%;
+  transform-origin: left center;
+  /* gira hacia atras con la cara hacia afuera (si no, el texto se lee al reves) */
+  transform: rotateY(-90deg) translateX(-100%);
+  background: linear-gradient(90deg, #0d1219 0%, #3c4b5e 35%, #56677c 50%, #2a3646 70%, #0d1219 100%);
+  border-radius: 2px;
+  color: #c7d5e0;
+  font: 800 12px/36px Arial, sans-serif;
+  letter-spacing: 3px;
+  writing-mode: vertical-rl;
+  text-align: center;
+  pointer-events: none;
+}
+/* canto derecho */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div::before {
+  content: "";
+  position: absolute;
+  right: 0; top: 0;
+  width: 36px; height: 100%;
+  transform-origin: right center;
+  transform: rotateY(90deg) translateX(100%);
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 4px),
+    linear-gradient(90deg, #11161e 0%, #3a4759 45%, #4d5d71 55%, #11161e 100%);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* sombra en el piso */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div > div:first-child {
+  box-shadow: 0 18px 22px -10px rgba(0, 0, 0, 0.75);
+}

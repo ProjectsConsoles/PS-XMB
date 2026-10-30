@@ -4,6 +4,7 @@ import {
   Field,
   PanelSection,
   PanelSectionRow,
+  SliderField,
   TextField,
   ToggleField,
   staticClasses,
@@ -19,7 +20,7 @@ type Estado = {
   colores: string[];
   consola: string;
   color: string;
-  ajustes: Record<string, boolean>;
+  ajustes: Record<string, any>;
   clave: boolean;
   ultimo: string;
   paquetes: Paquete[];
@@ -28,6 +29,7 @@ type Estado = {
 
 const getEstado = callable<[], Estado>("get_estado");
 const setAjuste = callable<[clave: string, valor: boolean], Record<string, boolean>>("set_ajuste");
+const setSeparacion = callable<[valor: number], number>("set_separacion");
 const guardarClave = callable<[clave: string], string>("guardar_clave");
 const actualizarPortadas = callable<[], string>("actualizar_portadas");
 
@@ -141,6 +143,9 @@ function Requisitos({ estado }: { estado: Estado }) {
 
 function Panel() {
   const [estado, setEstado] = useState<Estado | null>(null);
+  // el control de distancia lleva su propio valor para moverse al instante (el estado
+  // del plugin se recarga cada 3 s)
+  const [separacion, setSeparacionLocal] = useState<number | null>(null);
   const [clave, setClave] = useState("");
   const [mensaje, setMensaje] = useState("");
 
@@ -207,6 +212,24 @@ function Panel() {
           />
         </PanelSectionRow>
       </PanelSection>
+      {estado.opciones.some((o) => o.nombre === "Biblioteca en baraja" && o.valor === "Si") && (
+        <PanelSection title="Biblioteca en baraja">
+          <PanelSectionRow>
+            <SliderField
+              label="Distancia entre cajas"
+              value={separacion ?? estado.ajustes.separacion ?? 80}
+              min={40}
+              max={140}
+              step={10}
+              showValue
+              onChange={(v) => {
+                setSeparacionLocal(v);
+                setSeparacion(v);
+              }}
+            />
+          </PanelSectionRow>
+        </PanelSection>
+      )}
       <MasOpciones estado={estado} recargar={recargar} />
       <PanelSection title="Extras">
         {interruptor("sonidos", "Sonidos por consola", "Cambia los paquetes de Audio Loader segun la consola")}
