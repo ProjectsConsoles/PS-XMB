@@ -10,3 +10,6 @@ Sacados de Wikimedia Commons (recoloreados y recortados para las franjas y lomos
 
 PlayStation, PS2, PS3, PS4, PS5 y el simbolo de PlayStation son marcas de Sony
 Interactive Entertainment. Este tema es un proyecto de aficionados sin relacion con Sony.
+
+Iconos del volumen (extras/volumen-android.css): volume_up y volume_off de Material
+Design Icons (Google), licencia Apache 2.0.
