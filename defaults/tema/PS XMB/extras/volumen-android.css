@@ -51,26 +51,51 @@
     rgba(255, 255, 255, 0.16) calc(var(--normalized-slider-value, 0) * 100%)) !important;
 }
 
-.audio_VolumePopin .gamepadslider_SliderTrack::before,
-.audio_VolumePopin .gamepadslider_SliderTrack::after,
 .audio_VolumePopin .gamepadslider_SliderHandleContainer,
 .audio_VolumePopin .gamepadslider_SliderNotchContainer {
   opacity: 0 !important;
 }
 
-/* la bocina abajo, dentro del relleno y derecha */
-.audio_VolumePopin .gamepaddialog_FieldIcon {
+/* iconos de Android (Material Design): bocina con ondas con volumen y tachada en 0. Van
+   en la barra porque ella conoce el nivel (--normalized-slider-value); se ven o no segun
+   el nivel, dibujados como mascara para poder calcularles el color. El icono de Steam
+   (su icono de silencio se veia raro) se esconde. */
+.audio_VolumePopin .gamepadslider_SliderTrack::before,
+.audio_VolumePopin .gamepadslider_SliderTrack::after {
+  content: "" !important;
   position: absolute !important;
-  left: 12px !important;
+  left: 10px !important;
   top: 50% !important;
-  width: 20px !important;
-  height: 20px !important;
-  z-index: 2 !important;
+  width: 24px !important;
+  height: 24px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  -webkit-mask: center / 24px 24px no-repeat;
+  mask: center / 24px 24px no-repeat;
   transform: translateY(-50%) rotate(90deg) !important;
+  z-index: 2 !important;
+  /* sombra leve: con poco volumen el icono blanco tambien queda sobre el relleno */
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.55));
 }
 
-.audio_VolumePopin .gamepaddialog_FieldIcon svg,
-.audio_VolumePopin .gamepaddialog_FieldIcon svg * {
-  fill: #1b1c20 !important;
-  color: #1b1c20 !important;
+.audio_VolumePopin .gamepadslider_SliderTrack::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%231b1c20%22%20d%3D%22M3%209v6h4l5%205V4L7%209H3zm13.5%203c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73%202.5-2.25%202.5-4.02zM14%203.23v2.06c2.89.86%205%203.54%205%206.71s-2.11%205.85-5%206.71v2.06c4.01-.91%207-4.49%207-8.77s-2.99-7.86-7-8.77z%22/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%231b1c20%22%20d%3D%22M3%209v6h4l5%205V4L7%209H3zm13.5%203c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73%202.5-2.25%202.5-4.02zM14%203.23v2.06c2.89.86%205%203.54%205%206.71s-2.11%205.85-5%206.71v2.06c4.01-.91%207-4.49%207-8.77s-2.99-7.86-7-8.77z%22/%3E%3C/svg%3E");
+  /* blanco mientras el relleno no le llega (la barra mide 214px y el icono acaba en 34px)
+     y oscuro cuando ya esta sobre el blanco */
+  --psx-tapado: clamp(0, (var(--normalized-slider-value, 0) * 214 - 30) / 8, 1);
+  background-color: rgb(calc(255 - 228 * var(--psx-tapado)), calc(255 - 227 * var(--psx-tapado)),
+    calc(255 - 223 * var(--psx-tapado))) !important;
+  opacity: clamp(0, var(--normalized-slider-value, 0) * 1000, 1) !important;
+}
+
+.audio_VolumePopin .gamepadslider_SliderTrack::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%231b1c20%22%20d%3D%22M16.5%2012c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45%202.45c.03-.2.05-.41.05-.63zm2.5%200c0%20.94-.2%201.82-.54%202.64l1.51%201.51C20.63%2014.91%2021%2013.5%2021%2012c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86%205%203.54%205%206.71zM4.27%203L3%204.27%207.73%209H3v6h4l5%205v-6.73l4.25%204.25c-.67.52-1.42.93-2.25%201.18v2.06c1.38-.31%202.63-.95%203.69-1.81L19.73%2021%2021%2019.73l-9-9L4.27%203zM12%204L9.91%206.09%2012%208.18V4z%22/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%231b1c20%22%20d%3D%22M16.5%2012c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45%202.45c.03-.2.05-.41.05-.63zm2.5%200c0%20.94-.2%201.82-.54%202.64l1.51%201.51C20.63%2014.91%2021%2013.5%2021%2012c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86%205%203.54%205%206.71zM4.27%203L3%204.27%207.73%209H3v6h4l5%205v-6.73l4.25%204.25c-.67.52-1.42.93-2.25%201.18v2.06c1.38-.31%202.63-.95%203.69-1.81L19.73%2021%2021%2019.73l-9-9L4.27%203zM12%204L9.91%206.09%2012%208.18V4z%22/%3E%3C/svg%3E");
+  background-color: #ffffff !important;
+  opacity: clamp(0, 1 - var(--normalized-slider-value, 0) * 1000, 1) !important;
+}
+
+.audio_VolumePopin .gamepaddialog_FieldIcon {
+  display: none !important;
 }
