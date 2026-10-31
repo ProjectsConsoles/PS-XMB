@@ -9,3 +9,8 @@
 .ReactVirtualized__Grid__innerScrollContainer > .gpfocuswithin:has(.basicgamecarousel_Featured) ~ div {
   transform: translateX(44px);
 }
+
+/* fondo del juego seleccionado (extras/fondo-juego.css): se queda, como en Steam */
+:root {
+  --psx-fondo-anim: psx-fondo-fijo 0.5s;
+}

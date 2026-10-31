@@ -28,7 +28,7 @@ for sub in ("sonidos", "controles", "portadas"):
 import decky  # noqa: E402
 
 AJUSTES = os.path.join(HOME, ".config", "psxmb_plugin.json")
-DEFECTO = {"sonidos": True, "controles": True, "portadas": True, "separacion": 80}
+DEFECTO = {"sonidos": True, "controles": True, "portadas": True, "separacion": 80, "caja_auto": True, "escala": True}
 SERVICIOS = ["psxmb-sonidos.path", "psxmb-sonidos.service", "psxmb-portadas.path",
              "psxmb-portadas.timer", "psxmb-portadas.service", "psxmb-controles.service"]
 
@@ -77,6 +77,45 @@ def baraja():
     """controles/baraja.py: acomoda la Biblioteca en baraja (solo si esa opcion esta activa)"""
     import baraja as modulo
     return modulo
+
+
+# Caja 3D: con "Caja segun la consola" encendido, la marca de la caja sigue a la consola
+MARCA_POR_CONSOLA = {"PS2": "PS2", "PS3": "PS3", "PS4": "PS4", "PS5": "PS5", "Steam Deck": "Steam"}
+
+
+def caja_por_consola():
+    """Pone la marca de la caja de la consola elegida. Va por CSS Loader (no escribiendo
+    config_USER.json) para que su panel no quede desfasado."""
+    if not ESTADO["ajustes"]["caja_auto"]:
+        return
+    cfg = leer_json(os.path.join(TEMA, "config_USER.json"), {})
+    consola = cfg.get("Consola", "")
+    marca = next((m for c, m in MARCA_POR_CONSOLA.items() if consola.startswith(c)), "Steam")
+    if cfg.get("Marca de la caja", "Steam") == marca:
+        return
+    js = ('DeckyPluginLoader.createLegacyPluginAPI("CSS Loader").callPluginMethod("set_patch_of_theme", '
+          + json.dumps({"themeName": "PS XMB", "patchName": "Marca de la caja", "value": marca}) + ')')
+    modulos()[1].evaluar_en_steam(js)
+    aviso(f"caja {marca} ({consola})")
+
+
+# El tema esta medido para la escala de pantalla de 120% (Configuracion > Pantalla):
+# con el ajuste "escala" encendido el plugin la mantiene ahi
+ESCALA = 1.2
+JS_ESCALA = """(async () => {
+  const r = await SteamClient._internal.GetDisplayScaleFactors();
+  if (Math.abs(r.flDeviceScale - %s) < 0.01) return "igual";
+  SteamClient.Window.SetGamepadUIAutoDisplayScale(false);
+  SteamClient.Window.SetGamepadUIManualDisplayScaleFactor(%s);
+  return "cambiada de " + r.flDeviceScale;
+})()""" % (ESCALA, ESCALA)
+
+
+def escala_fija():
+    r = modulos()[1].evaluar_en_steam(JS_ESCALA)
+    valor = r.get("result", {}).get("result", {}).get("value", "")
+    if valor.startswith("cambiada"):
+        aviso(f"escala de pantalla {valor} a {ESCALA}")
 
 
 def quitar_controles():
@@ -206,6 +245,10 @@ class Plugin:
         guardar()
         if clave == "controles" and not valor:
             await correr(quitar_controles)
+        if clave == "caja_auto" and valor:
+            await correr(caja_por_consola)
+        if clave == "escala" and valor:
+            await correr(escala_fija)
         aviso(f"{clave}: {'si' if valor else 'no'}")
         return ESTADO["ajustes"]
 
@@ -244,17 +287,22 @@ class Plugin:
         config = os.path.join(TEMA, "config_USER.json")
         ultima_cfg = ultima_juegos = None
         ultimo_reintento = time.time()
+        vueltas = 0
         while True:
             try:
                 if os.path.isdir(TEMA):
                     if ESTADO["ajustes"]["controles"]:
                         await correr(lambda: modulos()[2].poner())
                     await correr(lambda: baraja().poner(ESTADO["ajustes"]["separacion"]))
+                    if ESTADO["ajustes"]["escala"] and vueltas % 10 == 0:
+                        await correr(escala_fija)
+                    vueltas += 1
                     if os.path.getmtime(config) != ultima_cfg:
                         # CSS Loader guarda varias veces seguidas: se espera a que termine
                         await asyncio.sleep(1)
                         ultima_cfg = os.path.getmtime(config)
                         await correr(sonidos_ahora)
+                        await correr(caja_por_consola)
                     if ESTADO["ajustes"]["portadas"] and hay_clave():
                         firma = await correr(firma_juegos)
                         diario = time.time() - ultimo_reintento > 24 * 3600

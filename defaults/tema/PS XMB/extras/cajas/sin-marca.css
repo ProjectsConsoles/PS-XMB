@@ -1,0 +1,12 @@
+/* Caja 3D - Sin marca: sin franja, la portada ocupa toda la cara y el lomo es liso */
+:root {
+  --psx-caja-alto: 0%;
+  --psx-caja-linea: transparent;
+  --psx-caja-texto: "";
+  --psx-caja-logo: none;
+  --psx-caja-sombra: none;
+  --psx-caja-lomo: "";
+  --psx-caja-lomo-fondo: linear-gradient(90deg, #000000 0%, #262626 45%, #333333 50%, #1a1a1a 60%, #000000 100%);
+  --psx-caja-canto: linear-gradient(90deg, #050505 0%, #2a2a2a 50%, #050505 100%);
+  --psx-caja-plastico: #050505;
+}

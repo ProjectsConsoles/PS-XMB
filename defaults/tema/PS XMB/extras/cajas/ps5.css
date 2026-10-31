@@ -1,0 +1,21 @@
+/* Caja 3D - PS5: franja blanca arriba con PS5 en negro; el lomo empieza en blanco y la caja es azul */
+:root {
+  --psx-caja-alto: 7%;
+  --psx-caja-franja1: #ffffff;
+  --psx-caja-franja2: #ececec;
+  --psx-caja-linea: transparent;
+  --psx-caja-texto: "";
+  --psx-caja-alinea: left;
+  --psx-caja-sangria: 7px;
+  --psx-caja-color: #000000;
+  --psx-caja-sombra: none;
+  --psx-caja-fuente: 900 11px/14px Arial, sans-serif;
+  --psx-caja-espacio: 1.5px;
+  --psx-caja-logo: url("/themes_custom/PS%20XMB/extras/cajas/logos/ps5.svg");
+  --psx-caja-lomo: "";
+  --psx-caja-lomo-fondo: url("/themes_custom/PS%20XMB/extras/cajas/logos/ps-simbolo-negro.svg") center 7px / 14.5px auto no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.06) 30%, rgba(255, 255, 255, 0.04) 50%, rgba(0, 0, 0, 0.06) 70%, rgba(0, 0, 0, 0.3) 100%), linear-gradient(180deg, #ffffff 0, #e4e4e4 27px, rgba(0, 0, 0, 0.15) 27px 28px, #1d4fae 28px, #163f8f 100%);
+  --psx-caja-lomo-color: #ffffff;
+  --psx-caja-canto: linear-gradient(90deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.06) 30%, rgba(255, 255, 255, 0.04) 50%, rgba(0, 0, 0, 0.06) 70%, rgba(0, 0, 0, 0.3) 100%), linear-gradient(180deg, #ffffff 0, #e4e4e4 7%, #1d4fae 7%, #163f8f 100%);
+  --psx-caja-plastico: #163f8f;
+  --psx-caja-logo-lugar: 6px 2.5px / auto 9px;
+}

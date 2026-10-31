@@ -122,6 +122,16 @@ def color_por_consola(cfg_tema, estado):
     return True
 
 
+def _leer(s, n):
+    """recv que no se queda girando: si Steam cierra la conexion (pasa mientras recarga
+    su interfaz) recv devuelve vacio para siempre; se avisa con un error y el que llama
+    lo reintenta despues."""
+    datos = s.recv(n)
+    if not datos:
+        raise ConnectionError("Steam cerro la conexion del depurador")
+    return datos
+
+
 def evaluar_en_steam(js, es_pestana=lambda t: t["title"] == "SharedJSContext"):
     """Corre JS en una ventana de Steam por su depurador (localhost:8080); por defecto
     el contexto de Decky (SharedJSContext). WebSocket minimo con la libreria estandar
@@ -136,7 +146,7 @@ def evaluar_en_steam(js, es_pestana=lambda t: t["title"] == "SharedJSContext"):
                "Sec-WebSocket-Version: 13\r\n\r\n").encode())
     resp = b""
     while b"\r\n\r\n" not in resp:
-        resp += s.recv(4096)
+        resp += _leer(s, 4096)
     datos = json.dumps({"id": 1, "method": "Runtime.evaluate",
                         "params": {"expression": js, "awaitPromise": True,
                                    "returnByValue": True}}).encode()
@@ -148,7 +158,7 @@ def evaluar_en_steam(js, es_pestana=lambda t: t["title"] == "SharedJSContext"):
     sobra = resp.split(b"\r\n\r\n", 1)[1]
     while True:  # lee tramas hasta la respuesta con id 1
         while len(sobra) < 2:
-            sobra += s.recv(4096)
+            sobra += _leer(s, 4096)
         n = sobra[1] & 0x7F
         inicio = 2
         if n == 126:
@@ -156,7 +166,7 @@ def evaluar_en_steam(js, es_pestana=lambda t: t["title"] == "SharedJSContext"):
         elif n == 127:
             n, inicio = int.from_bytes(sobra[2:10], "big"), 10
         while len(sobra) < inicio + n:
-            sobra += s.recv(65536)
+            sobra += _leer(s, 65536)
         trama, sobra = sobra[inicio:inicio + n], sobra[inicio + n:]
         try:
             msg = json.loads(trama)

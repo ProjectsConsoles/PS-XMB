@@ -1,0 +1,76 @@
+/* Indicador de volumen estilo Android: una pildora vertical en el borde izquierdo, a media
+   altura, que se llena de blanco desde abajo. Steam lo trae como una barra
+   horizontal arriba a la izquierda (audio_VolumePopin) que baja al cambiar el volumen;
+   aqui entra y sale por la izquierda. El control deslizante se gira 90 grados. */
+.audio_VolumePopin {
+  position: fixed !important;
+  top: 50% !important;
+  left: 18px !important;
+  right: auto !important;
+  width: 56px !important;
+  height: 230px !important;
+  padding: 0 !important;
+  border-radius: 28px !important;
+  background: rgba(28, 30, 36, 0.92) !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5) !important;
+  transform: translate(0, -50%) !important;
+  transition: transform 0.28s cubic-bezier(.2, .8, .2, 1), opacity 0.28s ease !important;
+  z-index: 1000 !important;
+}
+
+.audio_VolumePopin.audio_VolumePopinHidden {
+  transform: translate(-160%, -50%) !important;
+  opacity: 0 !important;
+}
+
+.audio_VolumePopin .audio_VolumeSliderPosition {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: 214px !important;
+  height: 44px !important;
+  transform: translate(-50%, -50%) rotate(-90deg) !important;
+}
+
+.audio_VolumePopin .audio_VolumeSliderPosition *:not(svg):not(path):not(.gamepaddialog_FieldIcon) {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* barra gruesa y redonda, llena de blanco hasta el volumen actual, sin perilla */
+.audio_VolumePopin .gamepadslider_SliderTrack {
+  position: relative !important;
+  height: 44px !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  background: linear-gradient(90deg,
+    #ffffff 0,
+    #ffffff calc(var(--normalized-slider-value, 0) * 100%),
+    rgba(255, 255, 255, 0.16) calc(var(--normalized-slider-value, 0) * 100%)) !important;
+}
+
+.audio_VolumePopin .gamepadslider_SliderTrack::before,
+.audio_VolumePopin .gamepadslider_SliderTrack::after,
+.audio_VolumePopin .gamepadslider_SliderHandleContainer,
+.audio_VolumePopin .gamepadslider_SliderNotchContainer {
+  opacity: 0 !important;
+}
+
+/* la bocina abajo, dentro del relleno y derecha */
+.audio_VolumePopin .gamepaddialog_FieldIcon {
+  position: absolute !important;
+  left: 12px !important;
+  top: 50% !important;
+  width: 20px !important;
+  height: 20px !important;
+  z-index: 2 !important;
+  transform: translateY(-50%) rotate(90deg) !important;
+}
+
+.audio_VolumePopin .gamepaddialog_FieldIcon svg,
+.audio_VolumePopin .gamepaddialog_FieldIcon svg * {
+  fill: #1b1c20 !important;
+  color: #1b1c20 !important;
+}

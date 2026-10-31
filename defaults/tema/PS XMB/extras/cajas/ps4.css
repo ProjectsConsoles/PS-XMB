@@ -1,0 +1,21 @@
+/* Caja 3D - PS4: franja azul arriba con PS4 en blanco; caja de plastico azul */
+:root {
+  --psx-caja-alto: 7%;
+  --psx-caja-franja1: #1a6ae0;
+  --psx-caja-franja2: #003791;
+  --psx-caja-linea: transparent;
+  --psx-caja-texto: "";
+  --psx-caja-alinea: left;
+  --psx-caja-sangria: 7px;
+  --psx-caja-color: #ffffff;
+  --psx-caja-sombra: none;
+  --psx-caja-fuente: 900 11px/14px Arial, sans-serif;
+  --psx-caja-espacio: 1.5px;
+  --psx-caja-logo: url("/themes_custom/PS%20XMB/extras/cajas/logos/ps4.svg");
+  --psx-caja-lomo: "";
+  --psx-caja-lomo-fondo: url("/themes_custom/PS%20XMB/extras/cajas/logos/ps-simbolo-blanco.svg") center 7px / 16px auto no-repeat, linear-gradient(90deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.06) 30%, rgba(255, 255, 255, 0.04) 50%, rgba(0, 0, 0, 0.06) 70%, rgba(0, 0, 0, 0.3) 100%), linear-gradient(180deg, #1a6ae0 0, #003791 28px, rgba(255, 255, 255, 0.14) 28px 29px, #1d4fae 29px, #163f8f 100%);
+  --psx-caja-lomo-color: #ffffff;
+  --psx-caja-canto: linear-gradient(90deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.06) 30%, rgba(255, 255, 255, 0.04) 50%, rgba(0, 0, 0, 0.06) 70%, rgba(0, 0, 0, 0.3) 100%), linear-gradient(180deg, #1a6ae0 0, #003791 7%, #1d4fae 7%, #163f8f 100%);
+  --psx-caja-plastico: #163f8f;
+  --psx-caja-logo-lugar: 6px 2.5px / auto 9px;
+}

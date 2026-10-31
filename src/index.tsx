@@ -66,7 +66,9 @@ function MasOpciones({ estado, recargar }: { estado: Estado; recargar: () => voi
         </ButtonItem>
       </PanelSectionRow>
       {abierto &&
-        estado.opciones.map((o) => (
+        estado.opciones
+          .filter((o) => o.nombre !== "Marca de la caja")
+          .map((o) => (
           <PanelSectionRow key={o.nombre}>
             {o.tipo === "checkbox" ? (
               <ToggleField
@@ -230,11 +232,45 @@ function Panel() {
           </PanelSectionRow>
         </PanelSection>
       )}
+      {estado.opciones.some((o) => o.nombre === "Portadas como caja 3D" && o.valor === "Si") && (
+        <PanelSection title="Caja 3D">
+          <PanelSectionRow>
+            <ToggleField
+              label="Caja segun la consola"
+              description="La caja toma la marca de la consola elegida (PS2, PS3, PS4, PS5 o Steam)"
+              checked={!!estado.ajustes.caja_auto}
+              onChange={async (v) => {
+                await setAjuste("caja_auto", v);
+                setTimeout(recargar, 1500);
+              }}
+            />
+          </PanelSectionRow>
+          {estado.opciones
+            .filter((o) => o.nombre === "Marca de la caja")
+            .map((o) => (
+              <PanelSectionRow key={o.nombre}>
+                <DropdownItem
+                  label="Tipo de caja"
+                  description={estado.ajustes.caja_auto ? "Si eliges una, se apaga lo de la consola" : undefined}
+                  rgOptions={opciones(o.valores)}
+                  selectedOption={o.valor}
+                  onChange={async (x) => {
+                    // elegir a mano apaga el modo automatico, si no la consola la cambiaria otra vez
+                    if (estado.ajustes.caja_auto) await setAjuste("caja_auto", false);
+                    await cambiarOpcion(o.nombre, x.data);
+                    setTimeout(recargar, 1500);
+                  }}
+                />
+              </PanelSectionRow>
+            ))}
+        </PanelSection>
+      )}
       <MasOpciones estado={estado} recargar={recargar} />
       <PanelSection title="Extras">
         {interruptor("sonidos", "Sonidos por consola", "Cambia los paquetes de Audio Loader segun la consola")}
         {interruptor("controles", "Columna de PS3 con arriba/abajo", "Traduce los botones en la columna del XMB")}
         {interruptor("portadas", "Portadas automaticas", "Baja portadas de SteamGridDB para juegos nuevos")}
+        {interruptor("escala", "Tamano de pantalla fijo (120%)", "El tema esta hecho para esta escala; el plugin la mantiene")}
       </PanelSection>
       <PanelSection title="SteamGridDB">
         <PanelSectionRow>

@@ -59,7 +59,8 @@
 
 /* Hasta que el script les da su lugar, las tarjetas no se ven (si no, al cambiar de
    pestana aparecen un instante amontonadas). La animacion solo corre ya acomodadas. */
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div:not([style*="--d"]) {
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div:not([style*="--d"]),
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"]:not([data-psx-listo]):not([data-psx-entrando]) > div > div > div {
   opacity: 0 !important;
 }
 
@@ -70,6 +71,7 @@
 /* Al presionar A: las demas se apartan y se desvanecen... */
 .gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-abriendo] > div > div > div:not([data-psx-elegida]) {
   opacity: 0 !important;
+
   transform:
     translateX(calc(var(--centro, 500px) - 67px - var(--i, 0) * 10px
       + var(--s, 0) * (340px + clamp(1, var(--ad, 0), 7) * var(--psx-paso, 80px))))
@@ -100,4 +102,45 @@
 @keyframes psx-entra {
   from { transform: translateX(-80px); opacity: 0; }
   to { transform: none; opacity: 1; }
+}
+
+/* Entrada al llegar a la Biblioteca (o al regresar de un juego): la caja elegida llega
+   girando desde la izquierda, frenando, y las demas entran desde los lados */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-entrando] > div > div > div {
+  animation: psx-bib-entrar-lado 0.55s cubic-bezier(.15, .8, .25, 1) both;
+  animation-delay: calc(min(var(--ad, 0), 7) * 35ms);
+}
+
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-entrando] > div > div > div[data-psx-sel] {
+  animation: psx-bib-entrar-girando 0.8s cubic-bezier(.1, .7, .2, 1) both;
+  animation-delay: 0s;
+}
+
+@keyframes psx-bib-entrar-lado {
+  from {
+    transform: translateX(calc(var(--centro, 500px) - 67px - var(--i, 0) * 10px
+        + var(--s, 0) * (70px + clamp(1, var(--ad, 0), 7) * var(--psx-paso, 80px)) + var(--s, 1) * 420px))
+      perspective(800px) rotateY(calc(var(--s, 0) * -45deg)) scale(1.25);
+  }
+}
+
+@keyframes psx-bib-entrar-girando {
+  from {
+    transform: translateX(calc(var(--centro, 500px) - 67px - var(--i, 0) * 10px - 620px))
+      perspective(800px) rotateY(900deg) scale(2);
+  }
+}
+
+/* Para esconder se usa opacidad (con visibility Steam no puede poner el foco y la
+   Biblioteca se traba). Mientras estan escondidas se aplana el 3D: con preserve-3d las
+   caras de la caja no respetan la opacidad y quedaban como cajas fantasma */
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div:not([style*="--d"]):not(#psx-flat),
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div:not([style*="--d"]) *:not(#psx-flat),
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"]:not([data-psx-listo]):not([data-psx-entrando]) > div > div > div:not(#psx-flat),
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"]:not([data-psx-listo]):not([data-psx-entrando]) > div > div > div *:not(#psx-flat),
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div[data-psx-elegida]:not(#psx-flat),
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div[data-psx-elegida] *:not(#psx-flat),
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-abriendo] > div > div > div:not([data-psx-elegida]):not(#psx-flat),
+.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-abriendo] > div > div > div:not([data-psx-elegida]) *:not(#psx-flat) {
+  transform-style: flat !important;
 }

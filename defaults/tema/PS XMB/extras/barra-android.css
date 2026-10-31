@@ -1,0 +1,43 @@
+/* Barra de arriba estilo Android: transparente con una sombra suave, la hora a la
+   izquierda y a la derecha el wifi y la bateria chicos y blancos, con el porcentaje
+   despues del icono. Solo en la pantalla principal (el menu de acceso rapido tiene la
+   suya en menus.css) y no en el navegador de la tienda (FlexGrowWebBrowserURLBar), que
+   trae sus botones a la izquierda: ahi solo cambian los iconos, la hora se queda a la
+   derecha y el fondo como esta. */
+.header_Header:not(.header_InQuickAccess):not(.FlexGrowWebBrowserURLBar) {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0)) !important;
+  box-shadow: none !important;
+  font-family: "Roboto", "Google Sans", "Motiva Sans", Arial, sans-serif !important;
+}
+
+.header_Header:not(.header_InQuickAccess):not(.FlexGrowWebBrowserURLBar) .header_Clock {
+  position: absolute !important;
+  left: 18px !important;
+  top: 0 !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.2px !important;
+  color: #ffffff !important;
+}
+
+.header_Header:not(.header_InQuickAccess) svg,
+.header_Header:not(.header_InQuickAccess) svg * {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+.header_Header:not(.header_InQuickAccess) > .header_HeaderItem {
+  transform: scale(0.85);
+}
+
+/* el diseno del Inicio esconde el wifi; en Android se ve */
+.header_Header:not(.header_InQuickAccess) .header_WirelessIcon {
+  visibility: visible !important;
+}
+
+.header_Header:not(.header_InQuickAccess) .header_Percentage {
+  order: 2 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  margin-left: 4px !important;
+}

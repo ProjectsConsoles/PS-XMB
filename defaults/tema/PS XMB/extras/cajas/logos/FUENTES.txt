@@ -1,0 +1,12 @@
+Logos de las cajas 3D (extras/cajas/logos)
+
+Sacados de Wikimedia Commons (recoloreados y recortados para las franjas y lomos):
+- ps2.svg              <- File:PlayStation 2 wordmark.svg (dominio publico)
+- ps3.svg              <- File:PlayStation 3 logo (2009).svg (recortado a "PS3")
+- ps4.svg              <- File:PlayStation 4 - Logo.svg
+- ps5.svg, ps5-blanco  <- File:PlayStation 5 logo and wordmark.svg
+- ps-simbolo-*.svg     <- simbolo de PlayStation sacado de ps5.svg
+- ps-color.svg         <- File:Playstation logo colour2.svg
+
+PlayStation, PS2, PS3, PS4, PS5 y el simbolo de PlayStation son marcas de Sony
+Interactive Entertainment. Este tema es un proyecto de aficionados sin relacion con Sony.

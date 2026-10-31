@@ -1,7 +1,7 @@
 {
   "name": "PS XMB",
   "author": "erickramoscruz",
-  "version": "v1.28",
+  "version": "v1.53",
   "target": "System-Wide",
   "manifest_version": 9,
   "description": "Elige tu consola: PS2 (anillo de luces), PS3 (XMB en columna), PS4 (Flow o particulas), PS5 (simbolos) o Steam Deck; cada una trae su fondo animado, sus tarjetas y su color. Pagina de juego a pantalla completa (idea de Clean Gameview, MIT). Opcional: portadas de SteamGridDB (portadas/LEEME.txt), sonidos que cambian con la consola (sonidos/LEEME.txt) y controles arriba/abajo para la columna de PS3 (controles/LEEME.txt).",
@@ -120,6 +120,12 @@
             "SP",
             "QuickAccess",
             "MainMenu"
+          ],
+          "extras/fondo-juego.css": [
+            "SP"
+          ],
+          "extras/inicio-baraja.css": [
+            "SP"
           ]
         }
       }
@@ -361,6 +367,53 @@
       "values": {
         "Si": {
           "extras/caja-3d.css": [
+            "SP"
+          ]
+        },
+        "No": {}
+      }
+    },
+    "Marca de la caja": {
+      "default": "Steam",
+      "type": "dropdown",
+      "values": {
+        "Steam": {},
+        "PS2": {
+          "extras/cajas/ps2.css": [
+            "SP"
+          ]
+        },
+        "PS3": {
+          "extras/cajas/ps3.css": [
+            "SP"
+          ]
+        },
+        "PS4": {
+          "extras/cajas/ps4.css": [
+            "SP"
+          ]
+        },
+        "PS5": {
+          "extras/cajas/ps5.css": [
+            "SP"
+          ]
+        },
+        "Sin marca": {
+          "extras/cajas/sin-marca.css": [
+            "SP"
+          ]
+        }
+      }
+    },
+    "Estilo Android (barra y volumen)": {
+      "default": "Si",
+      "type": "checkbox",
+      "values": {
+        "Si": {
+          "extras/barra-android.css": [
+            "SP"
+          ],
+          "extras/volumen-android.css": [
             "SP"
           ]
         },
