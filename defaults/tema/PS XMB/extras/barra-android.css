@@ -105,3 +105,10 @@
   background: rgba(255, 255, 255, 0.22) !important;
   border-radius: 999px !important;
 }
+
+/* En la Biblioteca la busqueda ocupa la izquierda de la barra: ahi la hora se queda en su
+   lugar normal (a la derecha) para no encimarse */
+html:has(.gamepadlibrary_GamepadLibrary) .header_Header:not(.header_InQuickAccess):not(.FlexGrowWebBrowserURLBar) .header_Clock {
+  position: static !important;
+  left: auto !important;
+}
