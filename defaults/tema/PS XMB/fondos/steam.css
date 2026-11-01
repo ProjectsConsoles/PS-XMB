@@ -1,0 +1,75 @@
+/* Fondo estilo Steam: degradado azul marino como el de Steam, manchas de luz azul y
+   violeta que se mueven y respiran despacio, franjas diagonales de luz muy tenues que se
+   desplazan y el logo de Steam como marca de agua. Detras de toda la interfaz: la imagen
+   del juego del Inicio lo tapa unos segundos y luego vuelve a verse. */
+
+html body {
+  background: linear-gradient(160deg, #1f3247 0%, #121b26 55%, #070a0f 110%) !important;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+  will-change: transform, background-position;
+}
+
+/* luz: manchas grandes y suaves */
+body::before {
+  inset: -25%;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(closest-side at 22% 30%, rgba(26, 159, 255, 0.34), transparent),
+    radial-gradient(closest-side at 78% 68%, rgba(110, 76, 210, 0.26), transparent),
+    radial-gradient(closest-side at 55% 105%, rgba(26, 159, 255, 0.20), transparent),
+    radial-gradient(closest-side at 90% 10%, rgba(102, 192, 244, 0.14), transparent);
+  animation: psx-steam-luz 26s ease-in-out infinite alternate;
+}
+
+/* franjas diagonales tenues. El logo de Steam que se construye solo lo pone
+   controles/baraja.py como elemento de la pagina (#psx-steam-logo); aqui su lugar.
+   (antes era la marca de agua que se construye solo
+   con las formas del logo oficial (SVG animado: se dibuja el contorno del circulo, se
+   traza el piston y se rellena; luego cambia al logo final, se queda y se desvanece;
+   ciclo de 12 s) */
+body::after {
+  inset: 0;
+  background:
+    repeating-linear-gradient(115deg, transparent 0 140px, rgba(102, 192, 244, 0.05) 140px 142px, transparent 142px 260px);
+  animation: psx-steam-franjas 40s linear infinite;
+}
+
+@keyframes psx-steam-luz {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate(4%, -3%) scale(1.08) rotate(4deg); }
+  100% { transform: translate(-3%, 3%) scale(1.02) rotate(-3deg); }
+}
+
+@keyframes psx-steam-franjas {
+  from { background-position: 0 0; }
+  to { background-position: 520px 0; }
+}
+
+/* marca para que controles/baraja.py ponga el logo animado */
+:root {
+  --psx-steam-logo: si;
+}
+
+#psx-steam-logo {
+  position: fixed;
+  right: -80px;
+  top: 50%;
+  width: 560px;
+  height: 560px;
+  margin-top: -280px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+#psx-steam-logo svg {
+  width: 100%;
+  height: 100%;
+}
+

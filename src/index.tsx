@@ -271,6 +271,7 @@ function Panel() {
         {interruptor("controles", "Columna de PS3 con arriba/abajo", "Traduce los botones en la columna del XMB")}
         {interruptor("portadas", "Portadas automaticas", "Baja portadas de SteamGridDB para juegos nuevos")}
         {interruptor("escala", "Tamano de pantalla fijo (120%)", "El tema esta hecho para esta escala; el plugin la mantiene")}
+        {interruptor("protector", "Protector de pantalla (1 min)", "En el Inicio deja solo el fondo animado; apaga el de Steam")}
       </PanelSection>
       <PanelSection title="SteamGridDB">
         <PanelSectionRow>

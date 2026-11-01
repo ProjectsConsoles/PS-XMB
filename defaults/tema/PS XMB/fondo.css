@@ -30,3 +30,15 @@ body:has(.gamepadui_TransparentBackground)::before,
 body:has(.gamepadui_TransparentBackground)::after {
   display: none !important;
 }
+
+/* Protector de pantalla (controles/baraja.py): tras 1 minuto sin tocar nada en el Inicio
+   se desvanece toda la interfaz y queda solo el fondo animado (body::before/::after y el
+   logo de Steam, que es un elemento de la pagina) */
+html body > *:not(#psx-steam-logo) {
+  transition: opacity 0.4s ease;
+}
+
+html[data-psx-protector] body > *:not(#psx-steam-logo) {
+  opacity: 0 !important;
+  transition: opacity 1.5s ease !important;
+}

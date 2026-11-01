@@ -1,5 +1,5 @@
 /* Fondo del juego seleccionado: a pantalla completa, aparece y despues de un rato
-   se desvanece (PS5: 10 s, PS3: 1 min, Steam Deck: se queda; cada consola pone --psx-fondo-anim). Steam alterna dos imagenes: la del juego actual y la del anterior,
+   se desvanece (PS5: 10 s, PS3: 1 min, Steam Deck: 5 s; cada consola pone --psx-fondo-anim). Steam alterna dos imagenes: la del juego actual y la del anterior,
    marcada OffScreen. La de salida se esconde, y la animacion va solo en la actual,
    asi vuelve a empezar cada vez que una imagen pasa a ser la del juego actual. */
 /* La seccion de la fila queda por encima del fondo animado (body::before/after),
@@ -77,4 +77,12 @@
 @keyframes psx-fondo-fijo {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* 6 s: aparece en medio segundo, se queda 5 s y se va en medio segundo (Steam Deck) */
+@keyframes psx-fondo-5s {
+  0% { opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { opacity: 0; }
 }

@@ -210,3 +210,15 @@ html[data-psx-js] .gamepadhome_RecentSection .ReactVirtualized__Grid__innerScrol
   outline: none !important;
   animation: none !important;
 }
+
+/* al regresar de un juego, mientras el foco se asienta (controles/baraja.py), no se muestra
+   el arte del primer juego de la fila */
+.gamepadhomerecentgames_RecentGamesBackgroundContainer {
+  transition: opacity 0.6s ease;
+}
+
+/* escondido al instante mientras se asienta y despues aparece suave (si no, entraba de golpe) */
+html[data-psx-asentando] .gamepadhomerecentgames_RecentGamesBackgroundContainer {
+  opacity: 0 !important;
+  transition: none !important;
+}

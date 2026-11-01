@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Cambia los sonidos y la musica de Audio Loader segun la consola elegida en PS XMB.
 
-- PS2 -> sonidos y ambiente de PS2, PS3 -> sonidos del XMB y musica del menu
+- PS2 -> sonidos y ambiente de PS2, PS3 -> sonidos del XMB y musica del menu,
+  Steam Deck -> sonidos de Steam y musica ambiente del Big Picture
   de PS3, PS4 -> sonidos de PS4, PS5 -> sonidos de PS5, Steam Deck -> los normales.
 - Donde no hay musica de esa consola, regresa la musica que tenias elegida.
 - Al cambiar de consola, el color de fondo regresa a "Automatico (de la consola)";

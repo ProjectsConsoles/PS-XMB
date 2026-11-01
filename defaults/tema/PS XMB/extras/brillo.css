@@ -17,3 +17,20 @@
   box-shadow: none !important;
   animation: none !important;
 }
+
+/* Menus contextuales (como Encender/Apagar): el marco va por dentro; por fuera lo tapaban
+   las opciones vecinas y a veces solo se veia arriba o abajo */
+.gamepadcontextmenu_contextMenuItem.gpfocus,
+.contextmenu_contextMenuItem.gpfocus {
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.9) !important;
+  animation: none !important;
+}
+
+/* Cuadros de aviso (como "Cambiando a Escritorio"): el cuadro completo recibe el foco y
+   el marco se veia como un recuadro blanco encima */
+.gamepaddialog_ModalPosition.gpfocus,
+.gamepaddialog_GamepadDialogContent.gpfocus,
+.gamepaddialog_ModalPosition > .gpfocus:not(button):not(.DialogButton) {
+  box-shadow: none !important;
+  animation: none !important;
+}

@@ -5,5 +5,6 @@
   "sonidos_ps5": "PS5_Sounds",
   "sonidos_steam_deck": "Default",
   "musica_ps2": "PS2 Ambience",
-  "musica_ps3": "PS3 Menu Music"
+  "musica_ps3": "PS3 Menu Music",
+  "musica_steam_deck": "Steam Big Picture Ambience"
 }

@@ -3,6 +3,9 @@
 
 Un solo proceso que arranca al iniciar sesion y se queda en segundo plano:
 - Controles: pone el traductor de arriba/abajo de la columna de PS3 en el Big Picture.
+- Baraja: acomoda la Biblioteca y el Inicio en baraja (controles/baraja.py).
+- Escala: deja la pantalla en la escala para la que esta medido el tema (en la Ally,
+  1920px de ancho: 1.8, para que todo mida lo mismo que en la Deck).
 - Sonidos: en Windows no hay Audio Loader, asi que copia los sonidos del paquete de
   cada consola sobre los de Steam (steamui/sounds) y guarda los originales para
   regresarlos con "Steam Deck". Si una actualizacion de Steam los pisa, los repone.
@@ -37,6 +40,17 @@ for sub in ("sonidos", "controles", "portadas"):
 import portadas_cuadradas as portadas  # noqa: E402
 import sonidos_por_modo as sonidos  # noqa: E402
 import xmb_vertical as controles  # noqa: E402
+import baraja  # noqa: E402
+
+# el tema esta medido para un ancho de 1067px (la Deck a 120%); en la Ally (1920px) es 1.8
+ESCALA = 1.8
+JS_ESCALA = """(async () => {
+  const r = await SteamClient._internal.GetDisplayScaleFactors();
+  if (Math.abs(r.flDeviceScale - %s) < 0.01) return "igual";
+  SteamClient.Window.SetGamepadUIAutoDisplayScale(false);
+  SteamClient.Window.SetGamepadUIManualDisplayScaleFactor(%s);
+  return "cambiada de " + r.flDeviceScale;
+})()""" % (ESCALA, ESCALA)
 
 PAQUETES = os.path.join(os.path.expanduser("~"), "homebrew", "sounds")
 ORIGINALES = os.path.join(PAQUETES, "_steam_original")
@@ -156,18 +170,51 @@ def firma_juegos():
     return total
 
 
+def una_sola_copia():
+    """Si ya hay un ayudante corriendo, este se cierra (al no tener ventana es facil
+    prenderlo varias veces sin darse cuenta)."""
+    import socket
+    global _CANDADO
+    _CANDADO = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        _CANDADO.bind(("127.0.0.1", 47823))
+    except OSError:
+        sys.exit(0)
+
+
+def avisar(texto):
+    """Mensajito de Windows que se cierra solo, para saber que el ayudante arranco."""
+    try:
+        subprocess.Popen(["mshta", "vbscript:Execute(\"CreateObject(\"\"WScript.Shell\"\").Popup \"\"" + texto
+                          + "\"\", 4, \"\"PS XMB\"\", 64:close\")"])
+    except Exception:
+        pass
+
+
 def vigilar():
+    una_sola_copia()
+    avisar("PS XMB para Windows esta corriendo")
     os.makedirs(os.path.dirname(ESTADO), exist_ok=True)
     estado = leer_json(ESTADO, {})
     ultima_cfg = ultima_juegos = None
     ultima_revision = 0
     log("PS XMB para Windows iniciado")
+    vueltas = 0
     while True:
         try:
             controles.poner()
+            baraja.poner(80)
+            if vueltas % 10 == 0:
+                r = sonidos.evaluar_en_steam(JS_ESCALA)
+                valor = r.get("result", {}).get("result", {}).get("value", "")
+                if str(valor).startswith("cambiada"):
+                    log("escala", valor, "->", ESCALA)
         except Exception:
             pass  # Steam cerrado o sin el puerto de depuracion todavia
+        vueltas += 1
         try:
+            if not os.path.exists(sonidos.CONFIG_TEMA):
+                raise FileNotFoundError  # CSS Loader todavia no crea la configuracion del tema
             mt = os.path.getmtime(sonidos.CONFIG_TEMA)
             ahora = time.time()
             if mt != ultima_cfg or ahora - ultima_revision > 60:
@@ -178,6 +225,8 @@ def vigilar():
                     poner_sonidos(paquete)
                     estado["paquete"] = paquete
                     json.dump(estado, open(ESTADO, "w"))
+        except FileNotFoundError:
+            pass
         except Exception as e:
             log("error en sonidos:", e)
         try:

@@ -6,7 +6,7 @@ en PS XMB:
   - PS3 -> sonidos del XMB y musica del menu de PS3
   - PS4 -> sonidos de PS4
   - PS5 -> sonidos de PS5
-  - Steam Deck -> sonidos normales de Steam
+  - Steam Deck -> sonidos normales de Steam y musica ambiente del Big Picture
   Donde no hay musica de esa consola, vuelve la musica que tenias.
   Ademas, al cambiar de consola el color de fondo regresa al de esa consola
   (Automatico); si eliges otro color se respeta hasta el siguiente cambio.
@@ -14,9 +14,11 @@ en PS XMB:
 1. Instala el plugin Audio Loader desde la tienda de Decky.
 2. En la tienda de Audio Loader baja estos paquetes:
      PS2 System Sounds / PS2 Ambience / XMB / PS3 Menu Music /
-     PS4 / PS5_Sounds
+     PS4 / PS5_Sounds / Steam Big Picture Ambience
    (si usas otros, pon sus nombres en sonidos.json)
-3. En la Deck abre Konsole (modo escritorio) y corre una vez:
+3. Si usas el plugin PS XMB no hace falta nada mas: en su panel, "Lo que se
+   necesita" te dice que paquetes faltan y "Sonidos por consola" lo prende o apaga.
+   Sin el plugin, en la Deck abre Konsole (modo escritorio) y corre una vez:
 
    python3 ~/homebrew/themes/PS\ XMB/sonidos/sonidos_por_modo.py --instalar-auto
 

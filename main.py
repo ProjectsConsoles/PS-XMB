@@ -28,7 +28,7 @@ for sub in ("sonidos", "controles", "portadas"):
 import decky  # noqa: E402
 
 AJUSTES = os.path.join(HOME, ".config", "psxmb_plugin.json")
-DEFECTO = {"sonidos": True, "controles": True, "portadas": True, "separacion": 80, "caja_auto": True, "escala": True}
+DEFECTO = {"sonidos": True, "controles": True, "portadas": True, "separacion": 80, "caja_auto": True, "escala": True, "protector": True}
 SERVICIOS = ["psxmb-sonidos.path", "psxmb-sonidos.service", "psxmb-portadas.path",
              "psxmb-portadas.timer", "psxmb-portadas.service", "psxmb-controles.service"]
 
@@ -116,6 +116,45 @@ def escala_fija():
     valor = r.get("result", {}).get("result", {}).get("value", "")
     if valor.startswith("cambiada"):
         aviso(f"escala de pantalla {valor} a {ESCALA}")
+
+
+# Protector de pantalla propio (controles/baraja.py): mientras este encendido se apaga el de
+# Steam (el que pone las capturas de pantalla); al apagarlo se regresa el valor anterior.
+# Steam guarda sus ajustes con un mensaje protobuf (CMsgClientSettings) en base64: los
+# campos 24008 y 24009 son system_idle_screensaver_battery_sec y _ac_sec (int32).
+def _varint(n):
+    b = bytearray()
+    while True:
+        bajo = n & 0x7F
+        n >>= 7
+        b.append(bajo | (0x80 if n else 0))
+        if not n:
+            return bytes(b)
+
+
+def _ajustes_steam(valores):
+    import base64
+    datos = b"".join(_varint(campo << 3) + _varint(v) for campo, v in valores.items())
+    return base64.b64encode(datos).decode()
+
+
+def protector_steam():
+    sonidos = modulos()[1]
+    r = sonidos.evaluar_en_steam("""(() => { const c = settingsStore.m_ClientSettings || {};
+      return JSON.stringify([c.system_idle_screensaver_battery_sec, c.system_idle_screensaver_ac_sec]); })()""")
+    bat, ac = json.loads(r.get("result", {}).get("result", {}).get("value", "[0,0]"))
+    previo = ESTADO["ajustes"].get("protector_steam_previo")
+    if ESTADO["ajustes"]["protector"]:
+        if bat or ac:
+            ESTADO["ajustes"]["protector_steam_previo"] = [bat or 0, ac or 0]
+            guardar()
+            sonidos.evaluar_en_steam(f'SteamClient.Settings.SetSetting("{_ajustes_steam({24008: 0, 24009: 0})}")')
+            aviso("protector de Steam apagado (se usa el de PS XMB)")
+    elif previo and not (bat or ac):
+        sonidos.evaluar_en_steam(f'SteamClient.Settings.SetSetting("{_ajustes_steam({24008: previo[0], 24009: previo[1]})}")')
+        ESTADO["ajustes"]["protector_steam_previo"] = None
+        guardar()
+        aviso("protector de Steam regresado")
 
 
 def quitar_controles():
@@ -249,6 +288,8 @@ class Plugin:
             await correr(caja_por_consola)
         if clave == "escala" and valor:
             await correr(escala_fija)
+        if clave == "protector":
+            await correr(protector_steam)
         aviso(f"{clave}: {'si' if valor else 'no'}")
         return ESTADO["ajustes"]
 
@@ -256,7 +297,7 @@ class Plugin:
         """distancia entre cajas de la Biblioteca en baraja; se aplica al momento"""
         ESTADO["ajustes"]["separacion"] = max(40, min(140, int(valor)))
         guardar()
-        await correr(lambda: baraja().poner(ESTADO["ajustes"]["separacion"]))
+        await correr(lambda: baraja().poner(ESTADO["ajustes"]["separacion"], ESTADO["ajustes"]["protector"]))
         return ESTADO["ajustes"]["separacion"]
 
     async def guardar_clave(self, clave):
@@ -293,9 +334,11 @@ class Plugin:
                 if os.path.isdir(TEMA):
                     if ESTADO["ajustes"]["controles"]:
                         await correr(lambda: modulos()[2].poner())
-                    await correr(lambda: baraja().poner(ESTADO["ajustes"]["separacion"]))
+                    await correr(lambda: baraja().poner(ESTADO["ajustes"]["separacion"], ESTADO["ajustes"]["protector"]))
                     if ESTADO["ajustes"]["escala"] and vueltas % 10 == 0:
                         await correr(escala_fija)
+                    if vueltas % 10 == 5:
+                        await correr(protector_steam)
                     vueltas += 1
                     if os.path.getmtime(config) != ultima_cfg:
                         # CSS Loader guarda varias veces seguidas: se espera a que termine

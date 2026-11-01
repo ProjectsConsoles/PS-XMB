@@ -41,3 +41,67 @@
   font-weight: 500 !important;
   margin-left: 4px !important;
 }
+
+/* Seleccion en la barra: en vez del marco blanco (los iconos tambien son blancos y se
+   perdian) una pildora blanca translucida detras del icono */
+.header_Header:not(.header_InQuickAccess) .header_HeaderItem.gpfocus {
+  box-shadow: none !important;
+  animation: none !important;
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-radius: 999px !important;
+}
+
+/* el diseno del Inicio esconde la busqueda con visibility, pero Steam igual la enfoca al
+   subir desde la fila (quedabas en un lugar invisible): con este estilo la lupa se ve */
+.header_Header:not(.header_InQuickAccess) .searchbar_SearchAndTitleContainer {
+  visibility: visible !important;
+}
+
+/* al subir desde el Inicio el foco cae en la busqueda: se ilumina la lupa (la caja de
+   texto esta escondida) */
+.header_Header:not(.header_InQuickAccess) .searchbar_SearchBox.gpfocus {
+  box-shadow: none !important;
+  animation: none !important;
+}
+
+.header_Header:not(.header_InQuickAccess) .searchbar_SearchAndTitleContainer:has(.gpfocus) > svg:first-of-type {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 0 0 7px rgba(255, 255, 255, 0.22) !important;
+}
+
+/* Menu de acceso rapido (los 3 puntos): conserva su fondo, pero los iconos y el texto
+   van como Android (blancos, chicos y el porcentaje despues de la bateria) */
+.header_Header.header_InQuickAccess {
+  font-family: "Roboto", "Google Sans", "Motiva Sans", Arial, sans-serif !important;
+}
+
+.header_Header.header_InQuickAccess svg,
+.header_Header.header_InQuickAccess svg * {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+.header_Header.header_InQuickAccess > .header_HeaderItem {
+  transform: scale(0.85);
+}
+
+.header_Header.header_InQuickAccess .header_Percentage {
+  order: 2 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  margin-left: 4px !important;
+}
+
+.header_Header.header_InQuickAccess .header_Clock {
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.2px !important;
+}
+
+.header_Header.header_InQuickAccess .header_HeaderItem.gpfocus {
+  box-shadow: none !important;
+  animation: none !important;
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-radius: 999px !important;
+}
