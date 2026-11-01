@@ -1,10 +1,24 @@
-/* Fondo estilo Steam: degradado azul marino como el de Steam, manchas de luz azul y
+/* Fondo estilo Steam: degradado del color elegido (azul marino con el color Steam Deck), manchas de luz azul y
    violeta que se mueven y respiran despacio, franjas diagonales de luz muy tenues que se
    desplazan y el logo de Steam como marca de agua. Detras de toda la interfaz: la imagen
    del juego del Inicio lo tapa unos segundos y luego vuelve a verse. */
 
+/* Colores sacados del color de fondo elegido (--ps3-claro / --ps3-oscuro de colores/):
+   el degradado se mantiene oscuro aunque el color sea claro, y las luces suben la
+   saturacion y el brillo del mismo tono. Con el color Steam Deck sale el azul de Steam. */
+:root {
+  --psx-sf-claro: var(--ps3-claro, #1b2838);
+  --psx-sf-oscuro: var(--ps3-oscuro, #0e141b);
+  --psx-sf-arriba: hsl(from var(--psx-sf-claro) h s min(calc(l + 5), 30));
+  --psx-sf-medio: hsl(from var(--psx-sf-oscuro) h s min(calc(l + 3), 14));
+  --psx-sf-abajo: hsl(from var(--psx-sf-oscuro) h s calc(l * 0.55));
+  --psx-sf-luz1: hsl(from var(--psx-sf-claro) calc(h - 8) min(100, calc(s * 2.6)) 55);
+  --psx-sf-luz2: hsl(from var(--psx-sf-claro) calc(h + 45) min(100, calc(s * 1.6)) 56);
+  --psx-sf-luz3: hsl(from var(--psx-sf-claro) calc(h - 11) min(100, calc(s * 2.4)) 68);
+}
+
 html body {
-  background: linear-gradient(160deg, #1f3247 0%, #121b26 55%, #070a0f 110%) !important;
+  background: linear-gradient(160deg, var(--psx-sf-arriba) 0%, var(--psx-sf-medio) 55%, var(--psx-sf-abajo) 110%) !important;
 }
 
 body::before,
@@ -21,10 +35,10 @@ body::before {
   inset: -25%;
   mix-blend-mode: screen;
   background:
-    radial-gradient(closest-side at 22% 30%, rgba(26, 159, 255, 0.34), transparent),
-    radial-gradient(closest-side at 78% 68%, rgba(110, 76, 210, 0.26), transparent),
-    radial-gradient(closest-side at 55% 105%, rgba(26, 159, 255, 0.20), transparent),
-    radial-gradient(closest-side at 90% 10%, rgba(102, 192, 244, 0.14), transparent);
+    radial-gradient(closest-side at 22% 30%, hsl(from var(--psx-sf-luz1) h s l / 0.34), transparent),
+    radial-gradient(closest-side at 78% 68%, hsl(from var(--psx-sf-luz2) h s l / 0.26), transparent),
+    radial-gradient(closest-side at 55% 105%, hsl(from var(--psx-sf-luz1) h s l / 0.20), transparent),
+    radial-gradient(closest-side at 90% 10%, hsl(from var(--psx-sf-luz3) h s l / 0.14), transparent);
   animation: psx-steam-luz 26s ease-in-out infinite alternate;
 }
 
@@ -37,7 +51,7 @@ body::before {
 body::after {
   inset: 0;
   background:
-    repeating-linear-gradient(115deg, transparent 0 140px, rgba(102, 192, 244, 0.05) 140px 142px, transparent 142px 260px);
+    repeating-linear-gradient(115deg, transparent 0 140px, hsl(from var(--psx-sf-luz3) h s l / 0.05) 140px 142px, transparent 142px 260px);
   animation: psx-steam-franjas 40s linear infinite;
 }
 
