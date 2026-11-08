@@ -24,7 +24,7 @@ from xmb_vertical import es_interfaz  # noqa: E402
 # botones de Steam: 1 A, 11 izquierda, 12 derecha
 BARAJA = r"""
 (() => {
-  const VERSION = 17;
+  const VERSION = 18;
   if (window.__psxBaraja === VERSION) return "ya estaba";
   if (window.__psxBarajaTimer) clearInterval(window.__psxBarajaTimer);
   if (window.__psxBarajaObs) window.__psxBarajaObs.disconnect();
@@ -48,15 +48,19 @@ BARAJA = r"""
     // mueve de lado (el CSS ya le quita el ancho de mas), asi que se regresa a 0
     const pestana = grid.closest("._TabContentsScroll");
     if (pestana && pestana.scrollLeft) pestana.scrollLeft = 0;
-    grid.style.setProperty("--centro", Math.round(grid.clientWidth / 2) + "px");
+    // solo se escribe lo que cambio (cada escritura hace que Steam recalcule esa tarjeta)
+    const poner = (x, n, v) => { v = String(v); if (x.style.getPropertyValue(n) !== v) x.style.setProperty(n, v); };
+    poner(grid, "--centro", Math.round(grid.clientWidth / 2) + "px");
     cartas.forEach((c, i) => {
       const d = i - f, ad = Math.abs(d);
-      c.style.setProperty("--i", i);
-      c.style.setProperty("--d", Math.max(-LADO, Math.min(LADO, d)));
-      c.style.setProperty("--s", Math.sign(d));
-      c.style.setProperty("--ad", ad);
-      c.style.setProperty("--c", d === 0 ? 1 : 0);
-      if (d === 0) c.dataset.psxSel = ""; else delete c.dataset.psxSel;
+      poner(c, "--i", i);
+      poner(c, "--d", Math.max(-LADO, Math.min(LADO, d)));
+      poner(c, "--s", Math.sign(d));
+      poner(c, "--ad", ad);
+      poner(c, "--c", d === 0 ? 1 : 0);
+      if (!("psxPuesto" in c.dataset)) c.dataset.psxPuesto = "";
+      if (d === 0) { if (!("psxSel" in c.dataset)) c.dataset.psxSel = ""; }
+      else if ("psxSel" in c.dataset) delete c.dataset.psxSel;
     });
     // entrada (la elegida llega girando desde la izquierda y las demas desde los lados) y
     // despues las animaciones, cuando Steam ya puso el foco
@@ -71,9 +75,19 @@ BARAJA = r"""
     }
   };
   const pedir = () => { if (!pendiente) { pendiente = true; requestAnimationFrame(acomodar); } };
+  // la marca data-psx-cuadricula la usan extras/caja-3d.css y extras/biblioteca-baraja.css
+  // (va aunque la baraja este apagada). La opcion se revisa cada 2 s o cuando aparece otra
+  // cuadricula: leer el estilo calculado obliga a Steam a recalcular estilos
+  let revisado = 0, activaUlt = false;
   const buscar = () => {
     const g = document.querySelector('div[style*="grid-auto-rows"]');
-    const activa = g && getComputedStyle(g).getPropertyValue("--psx-baraja").trim() === "si";
+    if (g && !("psxCuadricula" in g.dataset)) g.dataset.psxCuadricula = "";
+    const ahora = Date.now();
+    if (g && (g !== grid || ahora - revisado >= 2000)) {
+      revisado = ahora;
+      activaUlt = getComputedStyle(g).getPropertyValue("--psx-baraja").trim() === "si";
+    }
+    const activa = g && activaUlt;
     if (!activa) { if (grid) { window.__psxBarajaObs.disconnect(); grid = null; } return; }
     if (g !== grid) {
       grid = g;
@@ -231,7 +245,7 @@ BARAJA = r"""
 
 INICIO = r"""
 (() => {
-  const VERSION = 13;
+  const VERSION = 15;
   if (window.__psxInicio === VERSION) return "ya estaba";
   if (window.__psxInicioTimer) clearInterval(window.__psxInicioTimer);
   if (window.__psxInicioObs) window.__psxInicioObs.disconnect();
@@ -270,16 +284,27 @@ INICIO = r"""
     }
     fila.dataset.psxFoco = f;
     portadas();
+    // primero se leen todas las medidas y despues se escribe: leer el tamano de una tarjeta
+    // despues de moverle otra obliga a Steam a recalcular la pagina, una vez por tarjeta
     const centro = fila.parentElement.clientWidth / 2, p = paso();
+    const medidas = items.map(x => [x.offsetWidth, x.offsetLeft]);
+    const cd = claseDestacada();
+    const poner = (x, n, v) => { v = String(v); if (x.style.getPropertyValue(n) !== v) x.style.setProperty(n, v); };
     items.forEach((x, i) => {
       const d = i - f, ad = Math.abs(d), s = Math.sign(d);
       // destino de su centro en la baraja menos donde la pone Steam (left)
-      const destino = centro - x.offsetWidth / 2 + s * (70 + Math.min(ad, 7) * p);
-      x.style.setProperty("--tx", (destino - x.offsetLeft) + "px");
-      x.style.setProperty("--s", s);
-      x.style.setProperty("--ad", ad);
-      x.style.setProperty("--c", d === 0 ? 1 : 0);
-      if (d === 0) x.dataset.psxSel = ""; else delete x.dataset.psxSel;
+      const destino = centro - medidas[i][0] / 2 + s * (70 + Math.min(ad, 7) * p);
+      poner(x, "--tx", (destino - medidas[i][1]) + "px");
+      if (!("psxPuesto" in x.dataset)) x.dataset.psxPuesto = "";
+      const destacada = !!cd && !!x.querySelector(cd);
+      if (destacada !== ("psxDestacada" in x.dataset)) {
+        if (destacada) x.dataset.psxDestacada = ""; else delete x.dataset.psxDestacada;
+      }
+      poner(x, "--s", s);
+      poner(x, "--ad", ad);
+      poner(x, "--c", d === 0 ? 1 : 0);
+      if (d === 0) { if (!("psxSel" in x.dataset)) x.dataset.psxSel = ""; }
+      else if ("psxSel" in x.dataset) delete x.dataset.psxSel;
     });
     // las animaciones se encienden cuando Steam ya puso el foco y la fila quedo en su lugar
     if (conFoco && !("psxListo" in fila.dataset) && !fila.__psxEsperando) {
@@ -309,16 +334,44 @@ INICIO = r"""
       if (v) img.setAttribute("src", v);
     });
   };
+  // la clase real de la tarjeta destacada (Steam usa nombres con hash; CSS Loader pone en
+  // extras/inicio-baraja.css la regla ".psx-marca-destacada, <clase>")
+  let destacadaCache = null;
+  const claseDestacada = () => {
+    if (destacadaCache) return destacadaCache;
+    for (const hoja of document.styleSheets) {
+      let reglas;
+      try { reglas = hoja.cssRules; } catch (e) { continue; }
+      for (const r of reglas) {
+        const m = r.selectorText && r.selectorText.match(/\.psx-marca-destacada, \.([\w-]+)/);
+        if (m) return (destacadaCache = "." + m[1]);
+      }
+    }
+    return null;
+  };
   const pedir = () => { if (!pendiente) { pendiente = true; requestAnimationFrame(acomodar); } };
+  // leer el estilo calculado obliga a Steam a recalcular estilos (con el fondo animado, casi
+  // siempre): la opcion se revisa cada 2 s o cuando aparece otra fila, no cada 150 ms
+  let revisado = 0, activa = false;
   const buscar = () => {
-    const activa = getComputedStyle(document.documentElement).getPropertyValue("--psx-inicio-baraja").trim() === "si";
-    const g = activa ? document.querySelector(".ReactVirtualized__Grid__innerScrollContainer") : null;
+    const candidata = document.querySelector(".ReactVirtualized__Grid__innerScrollContainer");
+    const ahora = Date.now();
+    if (candidata === fila && ahora - revisado < 2000) return;
+    if (candidata !== fila || ahora - revisado >= 2000) {
+      revisado = ahora;
+      activa = getComputedStyle(document.documentElement).getPropertyValue("--psx-inicio-baraja").trim() === "si";
+    }
+    const g = activa ? candidata : null;
     if (g === fila) return;
-    if (fila) { delete fila.dataset.psxInicio; delete fila.dataset.psxListo; }
+    if (fila) {
+      delete fila.dataset.psxInicio; delete fila.dataset.psxListo;
+      if (fila.parentElement) delete fila.parentElement.dataset.psxInicioPadre;
+    }
     window.__psxInicioObs.disconnect();
     fila = g;
     if (!fila) return;
     fila.dataset.psxInicio = "";
+    if (fila.parentElement) fila.parentElement.dataset.psxInicioPadre = "";
     // los primeros 0.7 s: el foco salta y el fondo de Steam muestra el arte del primer juego
     const nueva = fila;
     nueva.__psxAsentando = true;

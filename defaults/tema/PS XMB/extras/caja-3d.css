@@ -7,12 +7,12 @@
    La marca (Steam, PS2, PS3...) son variables --psx-caja-*: aqui van las de Steam como
    valor por defecto y cada archivo de extras/cajas/ las cambia. */
 
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) {
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) {
   transform-style: preserve-3d;
 }
 /* franja arriba: la portada se recorre hacia abajo */
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child > div:first-child,
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:nth-child(3) {
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child > div:first-child,
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:nth-child(3) {
   /* esquinas de abajo redondeadas como la caja (las de arriba las pone la franja) */
   border-radius: 0 0 4px 4px !important;
   top: var(--psx-caja-alto, 7%) !important;
@@ -21,19 +21,19 @@
   padding-top: 0 !important;
   overflow: hidden !important;
 }
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child > div:first-child img,
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:nth-child(3) img {
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child > div:first-child img,
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:nth-child(3) img {
   border-radius: 0 0 4px 4px !important;
   object-fit: cover !important;
   height: 100% !important;
 }
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child {
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child {
   border-radius: 4px;
   outline: 2px solid var(--psx-caja-plastico, #0b0e13);
   background: var(--psx-caja-plastico, #0b0e13);
 }
 /* franja con la marca y brillo de plastico encima de toda la caja */
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child > div:nth-child(2)::before {
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child > div:nth-child(2)::before {
   content: var(--psx-caja-texto, "STEAM");
   position: absolute;
   inset: 0;
@@ -60,7 +60,7 @@
       transparent calc(var(--psx-caja-alto, 7%) + 0.3%));
 }
 /* lomo de la caja (izquierda) */
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child)::after {
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child)::after {
   content: var(--psx-caja-lomo, "STEAM");
   position: absolute;
   left: 0; top: 0;
@@ -79,7 +79,7 @@
   pointer-events: none;
 }
 /* canto derecho */
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child)::before {
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child)::before {
   content: "";
   position: absolute;
   right: 0; top: 0;
@@ -94,14 +94,14 @@
 }
 
 /* sombra en el piso */
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child {
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child {
   box-shadow: 0 18px 22px -10px rgba(0, 0, 0, 0.75);
 }
 
 /* el brillo que Steam pasa sobre la caja al seleccionarla (degradado diagonal) venia
    con esquinas cuadradas y se asomaba en las orillas redondeadas */
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child::before,
-:is(.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child::after {
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child::before,
+:is(.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div, [data-psx-inicio] > div > div > div > div:first-child > div:first-child) > div:first-child::after {
   border-radius: 4px !important;
   overflow: hidden;
 }

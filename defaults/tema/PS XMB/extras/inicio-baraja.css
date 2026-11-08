@@ -9,7 +9,9 @@
 
 /* sin scroll: la fila ya no se desplaza (las tarjetas se acomodan con transform) y asi
    tampoco recorta la tarjeta grande */
-div:has(> [data-psx-inicio]) {
+/* (marcas data-* puestas por controles/baraja.py en lugar de :has(): un :has() en la fila
+   hacia recalcular los estilos de todo el Inicio en cada movimiento) */
+[data-psx-inicio-padre] {
   overflow: visible !important;
 }
 
@@ -40,7 +42,7 @@ html[data-psx-js] .gamepadhome_RecentSection .ReactVirtualized__Grid__innerScrol
 /* hasta que el script les da su lugar no se ven (si no, aparecen amontonadas). Con
    opacidad (con visibility Steam no puede poner el foco y se traba); abajo se aplana el
    3D mientras estan escondidas, si no las caras de la caja escapan a la opacidad */
-[data-psx-inicio] > div:not([style*="--tx"]),
+[data-psx-inicio] > div:not([data-psx-puesto]),
 [data-psx-inicio]:not([data-psx-listo]) > div {
   opacity: 0 !important;
 }
@@ -125,9 +127,12 @@ html[data-psx-js] .gamepadhome_RecentSection .ReactVirtualized__Grid__innerScrol
 /* La primera tarjeta (ultimo jugado, "destacada") Steam la pone horizontal y ancha
    (442px); al regresar de un juego el foco cae en ella y se veia distinta. Aqui va
    vertical y del mismo tamano que las demas, con la imagen recortada al centro. */
-[data-psx-inicio] > div:has(.basicgamecarousel_Featured) {
+[data-psx-inicio] > div[data-psx-destacada] {
   width: 124px !important;
 }
+
+/* el script saca de aqui el nombre real de la clase de la destacada (CSS Loader lo traduce) */
+.psx-marca-destacada, .basicgamecarousel_Featured {}
 
 [data-psx-inicio] .basicgamecarousel_Featured,
 [data-psx-inicio] .basicgamecarousel_Featured .appportrait_LibraryItemBox {
@@ -148,7 +153,7 @@ html[data-psx-js] .gamepadhome_RecentSection .ReactVirtualized__Grid__innerScrol
 
 /* la caja de la destacada conserva su alto original y el lomo (100% de ese alto) se
    asomaba debajo de la portada */
-[data-psx-inicio] > div:has(.basicgamecarousel_Featured) > div > div > div:first-child > div:first-child {
+[data-psx-inicio] > div[data-psx-destacada] > div > div > div:first-child > div:first-child {
   width: 114px !important;
   height: 171px !important;
 }
@@ -191,8 +196,8 @@ html[data-psx-js] .gamepadhome_RecentSection .ReactVirtualized__Grid__innerScrol
 
 /* escondidas: 3D aplanado para que la opacidad aplique tambien a las caras de la caja */
 html[data-psx-js] .gamepadhome_RecentSection .ReactVirtualized__Grid__innerScrollContainer:not([data-psx-inicio]) *:not(#psx-flat),
-[data-psx-inicio] > div:not([style*="--tx"]):not(#psx-flat),
-[data-psx-inicio] > div:not([style*="--tx"]) *:not(#psx-flat),
+[data-psx-inicio] > div:not([data-psx-puesto]):not(#psx-flat),
+[data-psx-inicio] > div:not([data-psx-puesto]) *:not(#psx-flat),
 [data-psx-inicio]:not([data-psx-listo]) > div:not(#psx-flat),
 [data-psx-inicio]:not([data-psx-listo]) > div *:not(#psx-flat),
 [data-psx-inicio][data-psx-abriendo] > div:not([data-psx-elegida]):not(#psx-flat),
@@ -205,7 +210,7 @@ html[data-psx-js] .gamepadhome_RecentSection .ReactVirtualized__Grid__innerScrol
 /* Sin el marco blanco de seleccion (Brillo al seleccionar) en las cajas del Inicio y de
    la Biblioteca: en la baraja la elegida ya se nota por ser la grande del centro */
 [data-psx-inicio] .gpfocus,
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] .gpfocus {
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] .gpfocus {
   box-shadow: none !important;
   outline: none !important;
   animation: none !important;

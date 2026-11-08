@@ -8,7 +8,15 @@
    --psx-baraja avisa al script que la opcion esta activa. La navegacion de Steam sigue
    por indice: izquierda/derecha pasan de juego en juego. */
 
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] {
+/* La cuadricula la marca controles/baraja.py con data-psx-cuadricula (antes se buscaba con
+   [style*="grid-auto-rows"], pero un selector sobre el atributo style hacia recalcular los
+   estilos de toda la Biblioteca en cada movimiento). Hasta que llega la marca (150 ms) no
+   se ve, solo si el script corre. */
+html[data-psx-js] .gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"]:not([data-psx-cuadricula]) {
+  opacity: 0 !important;
+}
+
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] {
   --psx-baraja: si;
   display: flex !important;
   flex-wrap: nowrap !important;
@@ -27,7 +35,7 @@
 
 /* En la pagina las tarjetas quedan en fila, 10px una de otra, para que Steam sepa cual
    esta a la izquierda y a la derecha. Lo que se ve lo acomoda el transform. */
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div {
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div {
   flex: 0 0 134px;
   width: 134px !important;
   height: 201px !important;
@@ -46,7 +54,7 @@
 
 /* Las de los lados mas oscuras. Va como capa encima (no con filter): filter aplana el 3D
    y el lomo de la caja 3D dejaria de verse */
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div > div:first-child > div:nth-child(2)::after {
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div > div:first-child > div:nth-child(2)::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -59,17 +67,17 @@
 
 /* Hasta que el script les da su lugar, las tarjetas no se ven (si no, al cambiar de
    pestana aparecen un instante amontonadas). La animacion solo corre ya acomodadas. */
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div:not([style*="--d"]),
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"]:not([data-psx-listo]):not([data-psx-entrando]) > div > div > div {
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div:not([data-psx-puesto]),
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula]:not([data-psx-listo]):not([data-psx-entrando]) > div > div > div {
   opacity: 0 !important;
 }
 
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-listo] > div > div > div {
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula][data-psx-listo] > div > div > div {
   transition: transform 0.35s cubic-bezier(.2, .8, .2, 1), opacity 0.3s ease;
 }
 
 /* Al presionar A: las demas se apartan y se desvanecen... */
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-abriendo] > div > div > div:not([data-psx-elegida]) {
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula][data-psx-abriendo] > div > div > div:not([data-psx-elegida]) {
   opacity: 0 !important;
 
   transform:
@@ -83,7 +91,7 @@
 /* ...y la elegida se esconde: en su lugar vuela una copia en 3D que arma
    controles/baraja.py (gira sin parar hacia la izquierda y se encoge hasta desaparecer
    mientras se abre la pagina del juego) */
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div[data-psx-elegida] {
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div[data-psx-elegida] {
   opacity: 0 !important;
   transition: none !important;
 }
@@ -106,12 +114,12 @@
 
 /* Entrada al llegar a la Biblioteca (o al regresar de un juego): la caja elegida llega
    girando desde la izquierda, frenando, y las demas entran desde los lados */
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-entrando] > div > div > div {
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula][data-psx-entrando] > div > div > div {
   animation: psx-bib-entrar-lado 0.55s cubic-bezier(.15, .8, .25, 1) both;
   animation-delay: calc(min(var(--ad, 0), 7) * 35ms);
 }
 
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-entrando] > div > div > div[data-psx-sel] {
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula][data-psx-entrando] > div > div > div[data-psx-sel] {
   animation: psx-bib-entrar-girando 0.8s cubic-bezier(.1, .7, .2, 1) both;
   animation-delay: 0s;
 }
@@ -134,13 +142,13 @@
 /* Para esconder se usa opacidad (con visibility Steam no puede poner el foco y la
    Biblioteca se traba). Mientras estan escondidas se aplana el 3D: con preserve-3d las
    caras de la caja no respetan la opacidad y quedaban como cajas fantasma */
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div:not([style*="--d"]):not(#psx-flat),
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div:not([style*="--d"]) *:not(#psx-flat),
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"]:not([data-psx-listo]):not([data-psx-entrando]) > div > div > div:not(#psx-flat),
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"]:not([data-psx-listo]):not([data-psx-entrando]) > div > div > div *:not(#psx-flat),
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div[data-psx-elegida]:not(#psx-flat),
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"] > div > div > div[data-psx-elegida] *:not(#psx-flat),
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-abriendo] > div > div > div:not([data-psx-elegida]):not(#psx-flat),
-.gamepadlibrary_GamepadLibrary div[style*="grid-auto-rows"][data-psx-abriendo] > div > div > div:not([data-psx-elegida]) *:not(#psx-flat) {
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div:not([data-psx-puesto]):not(#psx-flat),
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div:not([data-psx-puesto]) *:not(#psx-flat),
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula]:not([data-psx-listo]):not([data-psx-entrando]) > div > div > div:not(#psx-flat),
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula]:not([data-psx-listo]):not([data-psx-entrando]) > div > div > div *:not(#psx-flat),
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div[data-psx-elegida]:not(#psx-flat),
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula] > div > div > div[data-psx-elegida] *:not(#psx-flat),
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula][data-psx-abriendo] > div > div > div:not([data-psx-elegida]):not(#psx-flat),
+.gamepadlibrary_GamepadLibrary [data-psx-cuadricula][data-psx-abriendo] > div > div > div:not([data-psx-elegida]) *:not(#psx-flat) {
   transform-style: flat !important;
 }
