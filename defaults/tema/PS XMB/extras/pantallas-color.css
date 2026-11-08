@@ -86,10 +86,21 @@
 .gamepadcontextmenu_BasicContextMenuHeader {
   position: relative !important;
   z-index: 2 !important;
+  /* a la mitad de la franja oscura */
+  top: -11px !important;
 }
 .gamepadcontextmenu_BasicContextMenuModal .gamepadcontextmenu_contextMenuContents {
   margin-top: -46px !important;
   padding-top: 50px !important;
+  /* franja del titulo en un tono mas oscuro del mismo color */
+  background:
+    linear-gradient(180deg,
+      hsl(from var(--ps3-claro, #1b2838) h s min(calc(l * 0.45), 15)) 0,
+      hsl(from var(--ps3-claro, #1b2838) h s min(calc(l * 0.45), 15)) 46px,
+      transparent 46px),
+    linear-gradient(180deg,
+      hsl(from var(--ps3-claro, #1b2838) h s min(calc(l * 0.75), 26)) 0%,
+      hsl(from var(--ps3-oscuro, #0e141b) h s min(calc(l * 0.9), 14)) 100%) !important;
 }
 /* (su contenedor recortaba lo que sobresale hacia arriba) */
 .gamepadcontextmenu_BasicContextMenuModal .gamepadcontextmenu_BasicContextMenuContainer {
