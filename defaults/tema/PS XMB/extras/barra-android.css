@@ -106,9 +106,10 @@
   border-radius: 999px !important;
 }
 
-/* En la Biblioteca la busqueda ocupa la izquierda de la barra: ahi la hora se queda en su
-   lugar normal (a la derecha) para no encimarse */
-html:has(.gamepadlibrary_GamepadLibrary) .header_Header:not(.header_InQuickAccess):not(.FlexGrowWebBrowserURLBar) .header_Clock {
+/* Con la busqueda abierta (Biblioteca y pantalla de busqueda) la barra de busqueda ocupa
+   la izquierda: ahi la hora se queda en su lugar normal (a la derecha) para no encimarse.
+   (el :has() va sobre la barra, que es chica; antes iba sobre html) */
+.header_Header:not(.header_InQuickAccess):not(.FlexGrowWebBrowserURLBar):has(.searchbar_ForceExpanded) .header_Clock {
   position: static !important;
   left: auto !important;
 }

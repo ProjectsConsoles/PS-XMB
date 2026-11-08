@@ -1,0 +1,97 @@
+/* Color del tema en las demas pantallas de Steam: Busqueda, paginas de Steam, Configuracion
+   y Amigos traen su propio fondo azul oscuro que tapa el fondo del tema. Aqui se quita (o se
+   deja un velo oscuro translucido donde hay texto) para que se vea el fondo animado y el
+   color elegido, igual que en el Inicio. */
+
+/* Busqueda y paginas tipo "GamepadPage" (degradado azul de Steam) */
+.gamepadsearch_GamepadSearch,
+.gamepadpage_GamepadPage {
+  background: transparent !important;
+}
+
+/* Configuracion: fondo transparente; la columna de secciones y el contenido con un velo */
+.gamepadpagedsettings_PagedSettingsDialog {
+  background: transparent !important;
+}
+.gamepadpagedsettings_PagedSettingsDialog_PageListColumn {
+  background: rgba(0, 0, 0, 0.28) !important;
+}
+.gamepadpagedsettings_PagedSettingDialog_ContentColumn {
+  background: rgba(0, 0, 0, 0.38) !important;
+}
+
+/* Amigos y chat */
+.GamepadMode.friendlist,
+.GamepadMode .multiChatDialog {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+.GamepadMode.friendlist.gpfocuswithin,
+.GamepadMode .multiChatDialog.gpfocuswithin {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* filas de opciones de Configuracion: gris azulado opaco -> translucido; la del foco mas
+   clara */
+.gamepadpagedsettings_PagedSettingDialog_ContentColumn .gamepaddialog_Field {
+  background: rgba(255, 255, 255, 0.07) !important;
+}
+.gamepadpagedsettings_PagedSettingDialog_ContentColumn .gamepaddialog_Field:is(.gpfocus, .gpfocuswithin) {
+  background: rgba(255, 255, 255, 0.18) !important;
+}
+
+/* ficha del juego, parte de abajo (actividad, tus cosas...): el degradado gris azulado de
+   Steam -> degradado oscuro del color del tema */
+.appdetails_ScrollContainer {
+  background: radial-gradient(100% 100% at 45% 35%,
+    hsl(from var(--ps3-claro, #1b2838) h s min(calc(l * 0.7), 24)) 0%,
+    hsl(from var(--ps3-oscuro, #0e141b) h s calc(l * 0.6)) 100%) !important;
+}
+
+/* Menus contextuales (Encender/Apagar, los 3 puntos de un juego...): caja redondeada del
+   color del tema con sombra, opciones transparentes, la seleccionada en blanco translucido
+   (no el bloque blanco de Steam) y separadores tenues */
+.gamepadcontextmenu_contextMenuContents {
+  background: linear-gradient(180deg,
+    hsl(from var(--ps3-claro, #1b2838) h s min(calc(l * 0.75), 26)) 0%,
+    hsl(from var(--ps3-oscuro, #0e141b) h s min(calc(l * 0.9), 14)) 100%) !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55) !important;
+  padding: 6px 0 !important;
+  /* Steam la estira al alto de su caja y sobraba espacio abajo */
+  align-self: flex-start !important;
+  height: auto !important;
+}
+.gamepadcontextmenu_contextMenuItem {
+  background: transparent !important;
+  color: #fff !important;
+  margin: 0 8px !important;
+  width: auto !important;
+  box-sizing: border-box !important;
+  border-radius: 12px !important;
+}
+.gamepadcontextmenu_contextMenuItem.gpfocus {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+}
+.gamepadcontextmenu_ContextMenuSeparator {
+  background: rgba(255, 255, 255, 0.12) !important;
+  height: 1px !important;
+  margin: 4px 16px !important;
+}
+
+/* Menus con titulo (como Encender/Apagar): el titulo va afuera del cuadro de opciones; el
+   cuadro se extiende hacia arriba por detras del titulo (margen negativo) para que quede
+   adentro, sin mover ni cambiar el tamano de nada */
+.gamepadcontextmenu_BasicContextMenuHeader {
+  position: relative !important;
+  z-index: 2 !important;
+}
+.gamepadcontextmenu_BasicContextMenuModal .gamepadcontextmenu_contextMenuContents {
+  margin-top: -46px !important;
+  padding-top: 50px !important;
+}
+/* (su contenedor recortaba lo que sobresale hacia arriba) */
+.gamepadcontextmenu_BasicContextMenuModal .gamepadcontextmenu_BasicContextMenuContainer {
+  overflow: visible !important;
+}

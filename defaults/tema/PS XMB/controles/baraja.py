@@ -245,7 +245,7 @@ BARAJA = r"""
 
 INICIO = r"""
 (() => {
-  const VERSION = 15;
+  const VERSION = 16;
   if (window.__psxInicio === VERSION) return "ya estaba";
   if (window.__psxInicioTimer) clearInterval(window.__psxInicioTimer);
   if (window.__psxInicioObs) window.__psxInicioObs.disconnect();
@@ -411,7 +411,13 @@ INICIO = r"""
   if (window.__psxInicioBloqueo) window.removeEventListener("vgp_onbuttondown", window.__psxInicioBloqueo, true);
   window.__psxInicioBloqueo = (e) => {
     const d = e.detail;
-    if (!fila || !d || d.__psx || !("psxAbriendo" in fila.dataset)) return;
+    if (!fila || !d || d.__psx) return;
+    // abajo desde la fila: Steam mandaba el foco a "Novedades", que el tema esconde, y ya no
+    // se veia donde estaba el foco (solo arriba lo regresaba)
+    if (d.button === 10 && fila.contains(document.querySelector(".gpfocus"))) {
+      e.stopImmediatePropagation(); e.preventDefault(); return;
+    }
+    if (!("psxAbriendo" in fila.dataset)) return;
     if ([2, 9, 10, 11, 12].includes(d.button)) { e.stopImmediatePropagation(); e.preventDefault(); }
   };
   window.addEventListener("vgp_onbuttondown", window.__psxInicioBloqueo, true);
@@ -425,7 +431,7 @@ INICIO = r"""
 
 PROTECTOR = r"""
 (() => {
-  const VERSION = 1;
+  const VERSION = 2;
   if (window.__psxProt === VERSION) return "ya estaba";
   if (window.__psxProtTimer) clearInterval(window.__psxProtTimer);
   (window.__psxProtEscuchas || []).forEach(([t, f]) => window.removeEventListener(t, f, true));
@@ -446,8 +452,10 @@ PROTECTOR = r"""
   window.__psxProtTimer = setInterval(() => {
     // solo cuenta con la pantalla principal al frente y en el Inicio (con el menu de los
     // 3 puntos abierto o un juego, las teclas van a otra ventana)
+    // (con un menu o dialogo abierto encima, como el de Encender/Apagar, tampoco)
     const enInicio = document.hasFocus() && document.visibilityState === "visible"
-      && !!document.querySelector(".ReactVirtualized__Grid__innerScrollContainer");
+      && !!document.querySelector(".ReactVirtualized__Grid__innerScrollContainer")
+      && !document.querySelector(".ModalOverlayContent.active");
     if (!window.__psxProtOn || !enInicio) {
       window.__psxProtUlt = Date.now();
       if ("psxProtector" in html.dataset && !window.__psxProtOn) delete html.dataset.psxProtector;

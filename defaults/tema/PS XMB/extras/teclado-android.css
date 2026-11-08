@@ -1,0 +1,158 @@
+/* Teclado de Steam estilo Android (Gboard): fondo con el color del tema, teclas
+   redondeadas y translucidas, las especiales un poco mas oscuras, Enter como pildora de
+   color e iconos en lugar de los textos (Retroceso, Mayus, Bloq Mayus, Enter/Buscar).
+   El teclado de Steam toma sus colores de variables (--key-*) pensadas para sus temas de
+   la tienda de puntos: aqui solo se cambian para el tema normal (DefaultTheme). Cada tecla
+   se reconoce por su clase KeyTheme_<tecla>, que Steam no cambia (va como [class~=...]:
+   CSS Loader confunde .KeyTheme_Enter con otra clase al traducir y la cambiaba). */
+
+.virtualkeyboard_Keyboard.DefaultTheme {
+  --psx-tk-claro: var(--ps3-claro, #1b2838);
+  --psx-tk-oscuro: var(--ps3-oscuro, #0e141b);
+  --psx-tk-tecla: rgba(255, 255, 255, 0.17);
+  --psx-tk-especial: rgba(255, 255, 255, 0.09);
+  --background-color: linear-gradient(180deg,
+    hsl(from var(--psx-tk-claro) h s min(calc(l - 2), 34)) 0%,
+    hsl(from var(--psx-tk-oscuro) h s calc(l * 0.65)) 100%) !important;
+  --foreground-color: #fff !important;
+  --key-color: #fff !important;
+  --key-background-color: var(--psx-tk-tecla) !important;
+  --key-focused-color: #fff !important;
+  --key-focused-background-color: rgba(255, 255, 255, 0.42) !important;
+  --key-shift-label-color: rgba(255, 255, 255, 0.7) !important;
+  --key-focused-shift-label-color: #fff !important;
+  --key-meta-color: #fff !important;
+  --key-meta-background-color: var(--psx-tk-especial) !important;
+  --key-tab-color: #fff !important;
+  --key-tab-background-color: var(--psx-tk-especial) !important;
+  --key-caps-color: #fff !important;
+  --key-caps-background-color: var(--psx-tk-especial) !important;
+  --key-shift-color: #fff !important;
+  --key-shift-background-color: var(--psx-tk-especial) !important;
+  --key-backspace-color: #fff !important;
+  --key-backspace-background-color: var(--psx-tk-especial) !important;
+  --key-enter-color: #fff !important;
+  --key-enter-background-color: var(--psx-tk-acento) !important;
+  --key-spacebar-color: #fff !important;
+  --key-spacebar-background-color: var(--psx-tk-tecla) !important;
+  --key-spacer-background-color: transparent !important;
+  --key-extendedkey-color: #fff !important;
+  --key-extendedkey-background-color: hsl(from var(--psx-tk-claro) h s min(calc(l + 6), 40)) !important;
+  --key-extendedkey-focused-color: #fff !important;
+  --key-extendedkey-focused-background-color: hsl(from var(--psx-tk-claro) h s min(calc(l + 24), 62)) !important;
+  --psx-tk-acento: hsl(from var(--psx-tk-claro) h min(100, calc(s * 1.15)) 42);
+  padding: 6px 6px 8px !important;
+  font-family: Roboto, "Google Sans", "Motiva Sans", sans-serif !important;
+}
+
+/* cada tecla: separada de las demas con un borde transparente (sin cambiar su tamano, que
+   Steam calcula) y redondeada */
+.virtualkeyboard_Keyboard.DefaultTheme [class*="KeyTheme_"] {
+  position: relative;
+  box-sizing: border-box !important;
+  border: 3px solid transparent !important;
+  background-clip: padding-box !important;
+  border-radius: 12px !important;
+  font-size: 22px !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+  transition: background-color 0.12s ease;
+}
+/* el foco del mando: Steam dibuja un cuadro blanco (sombra) alrededor del area de la
+   tecla; con las teclas redondeadas se veia cuadrado. La tecla con foco ya se aclara. */
+.virtualkeyboard_Keyboard.DefaultTheme .virtualkeyboard_KeyboardKeyHitArea.gpfocus,
+.virtualkeyboard_Keyboard.DefaultTheme .virtualkeyboard_KeyboardKeyHitArea:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+.virtualkeyboard_Keyboard.DefaultTheme .virtualkeyboard_KeyboardKeyHitArea.gpfocus > [class*="KeyTheme_"] {
+  background-color: var(--key-focused-background-color) !important;
+}
+
+/* teclas de acento (` y ´): Steam les pone negro fijo, sin variable */
+.virtualkeyboard_Keyboard.DefaultTheme .virtualkeyboard_KeyboardKeyDeadKey {
+  background-color: var(--psx-tk-especial) !important;
+  color: #fff !important;
+}
+.virtualkeyboard_Keyboard.DefaultTheme .virtualkeyboard_KeyboardKeyDeadKeyActive {
+  background-color: rgba(255, 255, 255, 0.42) !important;
+}
+
+/* simbolo de Mayus arriba a la derecha, chiquito, como los numeros de Gboard; el de Alt Gr
+   no se muestra */
+.virtualkeyboard_Keyboard.DefaultTheme [class*="KeyTheme_"] > .virtualkeyboard_ShiftedLabel {
+  position: absolute !important;
+  top: 3px !important;
+  right: 7px !important;
+  left: auto !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+.virtualkeyboard_Keyboard.DefaultTheme [class*="KeyTheme_"] > .virtualkeyboard_AltGrLabel {
+  display: none !important;
+}
+
+/* teclas de texto (Tab, Alt Gr, Pegar) mas chicas */
+.virtualkeyboard_Keyboard.DefaultTheme :is([class~="KeyTheme_Tab"], [class~="KeyTheme_AltGr"], [class~="KeyTheme_VKPaste"]) {
+  font-size: 15px !important;
+}
+
+/* Enter como pildora */
+.virtualkeyboard_Keyboard.DefaultTheme [class*="KeyTheme_Ent"] {
+  border-radius: 999px !important;
+}
+
+/* el boton del mando que activa la tecla (X, R2, L2, L3) va chiquito en la esquina */
+.virtualkeyboard_Keyboard.DefaultTheme [class*="KeyTheme_"] > .virtualkeyboard_ActionButtonGlyph {
+  position: absolute !important;
+  top: 4px !important;
+  left: 6px !important;
+  right: auto !important;
+  margin: 0 !important;
+  opacity: 0.55;
+}
+.virtualkeyboard_Keyboard.DefaultTheme [class*="KeyTheme_"] > .virtualkeyboard_ActionButtonGlyph img {
+  height: 14px !important;
+  width: auto !important;
+}
+
+/* iconos en lugar de los textos */
+.virtualkeyboard_Keyboard.DefaultTheme :is([class~="KeyTheme_Backspace"], [class~="KeyTheme_Shift"], [class~="KeyTheme_CapsLock"], [class*="KeyTheme_Ent"]) > span {
+  font-size: 0 !important;
+}
+.virtualkeyboard_Keyboard.DefaultTheme :is([class~="KeyTheme_Backspace"], [class~="KeyTheme_Shift"], [class~="KeyTheme_CapsLock"], [class*="KeyTheme_Ent"])::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  -webkit-mask: var(--psx-tk-icono) center / 28px 28px no-repeat;
+  mask: var(--psx-tk-icono) center / 28px 28px no-repeat;
+  pointer-events: none;
+}
+.virtualkeyboard_Keyboard.DefaultTheme [class~="KeyTheme_Backspace"] { --psx-tk-icono: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%3E%3Cpath%20fill=%22%23000%22%20d=%22M22%203H7c-.69%200-1.23.35-1.59.88L0%2012l5.41%208.11c.36.53.9.89%201.59.89h15c1.1%200%202-.9%202-2V5c0-1.1-.9-2-2-2zm0%2016H7.07L2.4%2012l4.66-7H22v14zm-11.59-2L14%2013.41%2017.59%2017%2019%2015.59%2015.41%2012%2019%208.41%2017.59%207%2014%2010.59%2010.41%207%209%208.41%2012.59%2012%209%2015.59z%22/%3E%3C/svg%3E"); }
+.virtualkeyboard_Keyboard.DefaultTheme [class~="KeyTheme_Shift"] { --psx-tk-icono: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%3E%3Cpath%20fill=%22%23000%22%20d=%22M12%203.4%202.6%2013.5H8V21h8v-7.5h5.4L12%203.4zm2%208.1V19h-4v-7.5H7.2L12%206.3l4.8%205.2H14z%22/%3E%3C/svg%3E"); }
+.virtualkeyboard_Keyboard.DefaultTheme [class~="KeyTheme_CapsLock"] { --psx-tk-icono: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%3E%3Cpath%20fill=%22%23000%22%20d=%22M12%208.41%2016.59%2013%2018%2011.59l-6-6-6%206L7.41%2013%2012%208.41zM6%2018h12v-2H6v2z%22/%3E%3C/svg%3E"); }
+.virtualkeyboard_Keyboard.DefaultTheme [class*="KeyTheme_Ent"] { --psx-tk-icono: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%3E%3Cpath%20fill=%22%23000%22%20d=%22M19%207v4H5.83l3.58-3.59L8%206l-6%206%206%206%201.41-1.41L5.83%2013H21V7z%22/%3E%3C/svg%3E"); }
+
+/* al presionar una tecla Steam la pinta de azul fijo (sin variable): el acento del tema */
+.virtualkeyboard_Keyboard.DefaultTheme .virtualkeyboard_KeyboardKey.virtualkeyboard_Touched {
+  background-color: var(--psx-tk-acento) !important;
+}
+
+/* menu de acentos (dejar presionada una tecla): fondo solido del color del tema, redondeado
+   y con sombra para que no se mezcle con las teclas de atras */
+.virtualkeyboard_Keyboard.DefaultTheme .virtualkeyboard_KeyboardExtendedRow {
+  border-radius: 14px !important;
+  background: hsl(from var(--psx-tk-claro) h s min(calc(l - 4), 28)) !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55) !important;
+  overflow: hidden;
+}
+.virtualkeyboard_Keyboard.DefaultTheme .virtualkeyboard_KeyboardExtendedKey {
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.virtualkeyboard_Keyboard.DefaultTheme .virtualkeyboard_KeyboardExtendedRow .gpfocus {
+  box-shadow: none !important;
+  outline: none !important;
+}
